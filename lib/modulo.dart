@@ -348,7 +348,7 @@ class _ModuloState extends State<Modulo> {
                           setState(() {});
                         },
                         child: Text('Process')),
-                    Text('${hasil}'),
+                    Text('$hasil'),
                     SizedBox(
                       height: 20,
                     ),
