@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +10,6 @@ class Pembagian extends StatefulWidget {
 class Tape {
   String value;
   bool isHead;
-
   Tape(this.value, this.isHead);
 }
 

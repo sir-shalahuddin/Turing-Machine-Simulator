@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tm/pembagian.dart';
 
+import 'modulo.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -145,7 +147,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                   minimumSize: Size(500, 500),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20))),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Modulo()));
+                              },
                               child: Text('Modulo'),
                             )))
                   ],
