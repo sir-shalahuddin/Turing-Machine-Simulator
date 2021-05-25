@@ -2,21 +2,24 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Pembagian extends StatefulWidget {
+class Pembagian2 extends StatefulWidget {
   @override
-  _PembagianState createState() => _PembagianState();
+  _Pembagian2State createState() => _Pembagian2State();
 }
 
 class Tape {
   String value;
   bool isHead;
+
   Tape(this.value, this.isHead);
 }
 
-class _PembagianState extends State<Pembagian> {
+class _Pembagian2State extends State<Pembagian2> {
   var _formKey = GlobalKey<FormState>();
   int bil1 = 0;
   int bil2 = 0;
+  int bil1new=0;
+  int bil2new=0;
   int hasil = 0;
   List<Tape> tape = [];
   bool isNext;
@@ -49,126 +52,139 @@ class _PembagianState extends State<Pembagian> {
 
     if (hasil == 0) {
       double tes = bil1 / bil2;
-      int item = bil1 + bil2 + 4 + tes.toInt();
+      print(tes);
+      int item = bil1 + bil2 + 7 + tes.toInt();
       for (int i = 0; i < item; i++) {
         if (i == 0 || i == item - 1 - tes)
           tape.add(Tape('b', false));
-        else if (i == bil2 + 1)
+        else if (i == bil2+1)
+          bil1new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
+        else if (i == bil2 + 3)
+          bil2new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
+        else if (i == bil2 + 2)
           tape.add(Tape('1', false));
-        else if (i == item - 2 - tes)
+        else if (i == item - 3 - tes)
           tape.add(Tape('1', false));
-        else if (i >= item - tes)
+        else if (i >= item - 2 - tes)
           tape.add(Tape('b', false));
         else
           tape.add(Tape('0', false));
       }
     }
+
+
     setState(() {});
   }
 
   state0() {
-    if (tape[head].value == '0') {
-      tape[head].value = 'b';
+    print(0);
+    if (tape[head].value == '-') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
       head = head + 1;
       pil = 1;
-    } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      isNext = false;
-      pil = 4;
     }
-  }
-
-  state1() {
-    if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 1;
-    } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 2;
-    }
-  }
-
-  state2() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 2;
-    } else if (tape[head].value == '1') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 7;
-    } else if (tape[head].value == '0') {
-      tape[head].value = 'x';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
-    }
-  }
-
-  state3() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
-    } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
-    } else if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
-    } else if (tape[head].value == 'b') {
-      tape[head].value = '0';
+    else if (tape[head].value == '0') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
       head = head + 1;
       pil = 0;
     }
+    else if (tape[head].value == '+') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      // isNext = false;
+      pil = 4;
+    }
   }
 
-  state4() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 4;
-    } else if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 4;
-    } else if (tape[head].value == '1') {
+  state1() {
+    print(1);
+    if (tape[head].value == '-') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
       head = head + 1;
       pil = 5;
+    } else if (tape[head].value == '+') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      // isNext = false;
+      pil = 2;
+    } else if (tape[head].value == '0' || tape[head].value == '1') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 1;
+    }
+  }
+
+  state2() {
+    print(2);
+    if (tape[head].value == 'b') {
+      tape[head].value = '-';
+      tape[head].isHead = false;
+      tape[head - 1].isHead = true;
+      head = head - 1;
+      pil = 3;
+    } else if (tape[head].value == '0' || tape[head].value == '1') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 2;
+    }
+  }
+
+  state3() {
+    print(3);
+    if (tape[head].value == 'b') {
+      tape[head].value = 'b';
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 6;
+    } else if (tape[head].value == '0' ||
+        tape[head].value == '1' ||
+        tape[head].value == '-' ||
+        tape[head].value == '+') {
+      tape[head].isHead = false;
+      tape[head - 1].isHead = true;
+      head = head - 1;
+      pil = 3;
+    }
+  }
+
+  state4() {
+    print(4);
+    if (tape[head].value == '+') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 5;
+    } else if (tape[head].value == '-') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      // isNext = false;
+      pil = 3;
+    } else if (tape[head].value == '0' || tape[head].value == '1') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 4;
     }
   }
 
   state5() {
+    print(5);
     if (tape[head].value == 'b') {
-      tape[head].value = '0';
+      tape[head].value = '+';
       tape[head].isHead = false;
       tape[head - 1].isHead = true;
       head = head - 1;
-      pil = 6;
-    } else if (tape[head].value == '0') {
+      pil = 3;
+    } else if (tape[head].value == '0' || tape[head].value == '1') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
       head = head + 1;
@@ -177,48 +193,156 @@ class _PembagianState extends State<Pembagian> {
   }
 
   state6() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
-    } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
-    } else if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
-    } else if (tape[head].value == 'b') {
+    print(6);
+    if (tape[head].value == '0') {
+      tape[head].value = 'b';
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
       head = head + 1;
-      pil = 0;
+      pil = 7;
+    } else if (tape[head].value == '-' || tape[head].value == '+') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      // isNext = false;
+      pil = 6;
+    } else if (tape[head].value == '1') {
+      tape[head].value = '1';
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 10;
     }
   }
 
   state7() {
-    if (tape[head].value == 'x') {
-      tape[head].value = 'b';
+    print(7);
+    if (tape[head].value == '0' ||
+        tape[head].value == '-' ||
+        tape[head].value == '+') {
       tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
+      tape[head + 1].isHead = true;
+      head = head + 1;
       pil = 7;
+    } else if (tape[head].value == '1') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 8;
+    }
+  }
+
+  state8() {
+    print(8);
+    if (tape[head].value == 'x' ||
+        tape[head].value == '-' ||
+        tape[head].value == '+') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 8;
     } else if (tape[head].value == '1') {
       tape[head].value = 'b';
       tape[head].isHead = false;
       tape[head - 1].isHead = true;
       head = head - 1;
-      pil = 7;
+      pil = 13;
     } else if (tape[head].value == '0') {
+      tape[head].value = 'x';
+      tape[head].isHead = false;
+      tape[head - 1].isHead = true;
+      head = head - 1;
+      pil = 9;
+    }
+  }
+
+  state9() {
+    print(9);
+    if (tape[head].value == 'x' ||
+        tape[head].value == '-' ||
+        tape[head].value == '+' ||
+        tape[head].value == '1' ||
+        tape[head].value == '0') {
+      tape[head].isHead = false;
+      tape[head - 1].isHead = true;
+      head = head - 1;
+      pil = 9;
+    } else if (tape[head].value == 'b') {
+      tape[head].value = '0';
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 6;
+    }
+  }
+
+  state10() {
+    print(10);
+    if (tape[head].value == 'x' ||
+        tape[head].value == '0' ||
+        tape[head].value == '-' ||
+        tape[head].value == '+') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 10;
+    } else if (tape[head].value == '1') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 11;
+    }
+  }
+
+  state11() {
+    print(11);
+    if (tape[head].value == 'b') {
+      tape[head].value = '0';
+      tape[head].isHead = false;
+      tape[head - 1].isHead = true;
+      head = head - 1;
+      pil = 12;
+    } else if (tape[head].value == '0' ||
+        tape[head].value == '-' ||
+        tape[head].value == '+') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 11;
+    }
+  }
+
+  state12() {
+    print(12);
+    if (tape[head].value == 'x' ||
+        tape[head].value == '-' ||
+        tape[head].value == '+' ||
+        tape[head].value == '1' ||
+        tape[head].value == '0') {
+      tape[head].isHead = false;
+      tape[head - 1].isHead = true;
+      head = head - 1;
+      pil = 12;
+    } else if (tape[head].value == 'b') {
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 6;
+    }
+  }
+
+  state13() {
+    print(13);
+    if (tape[head].value == 'x' ||
+        tape[head].value == '-' ||
+        tape[head].value == '+' ||
+        tape[head].value == '1' ||
+        tape[head].value == '0') {
       tape[head].value = 'b';
       tape[head].isHead = false;
       tape[head - 1].isHead = true;
       head = head - 1;
-      pil = 7;
+      pil = 13;
     }
   }
 
@@ -248,8 +372,26 @@ class _PembagianState extends State<Pembagian> {
         state6();
         break;
       case 7:
-        counter++;
         state7();
+        break;
+      case 8:
+        state8();
+        break;
+      case 9:
+        state9();
+        break;
+      case 10:
+        state10();
+        break;
+      case 11:
+        state11();
+        break;
+      case 12:
+        state12();
+        break;
+      case 13:
+        counter++;
+        state13();
         break;
     }
     setState(() {});
@@ -269,7 +411,7 @@ class _PembagianState extends State<Pembagian> {
     setState(() {});
     rep = Timer.periodic(Duration(milliseconds: 400), (rep) {
       nextState();
-      if (counter == bil1 + bil2) {
+      if (counter == bil1 + bil2 + 3) {
         setState(() {
           rep.cancel();
         });
@@ -288,7 +430,7 @@ class _PembagianState extends State<Pembagian> {
     pauseButton = true;
     rep = Timer.periodic(Duration(milliseconds: 400), (rep) {
       nextState();
-      if (counter == bil1 + bil2) {
+      if (counter == bil1 + bil2 + 3) {
         setState(() {
           rep.cancel();
         });
@@ -323,9 +465,10 @@ class _PembagianState extends State<Pembagian> {
                     TextFormField(
                       keyboardType: TextInputType.number,
                       decoration:
-                      InputDecoration(labelText: 'Masukkan bilangan X'),
+                          InputDecoration(labelText: 'Masukkan bilangan X'),
                       onSaved: (String value) {
-                        bil1 = int.parse(value);
+                        bil1new = int.parse(value);
+                        bil1= bil1new.abs();
                       },
                       validator: (value) {
                         if (value.isEmpty) {
@@ -337,9 +480,10 @@ class _PembagianState extends State<Pembagian> {
                     TextFormField(
                         keyboardType: TextInputType.number,
                         decoration:
-                        InputDecoration(labelText: 'Masukkan bilangan Y'),
+                            InputDecoration(labelText: 'Masukkan bilangan Y'),
                         onSaved: (String value) {
-                          bil2 = int.parse(value);
+                          bil2new = int.parse(value);
+                          bil2=bil2new.abs();
                         },
                         validator: (value) {
                           if (value.isEmpty) {
@@ -355,7 +499,7 @@ class _PembagianState extends State<Pembagian> {
                         },
                         child: Text('Process')),
                     if (hasil != 0) Text('Not Applicable'),
-                    if (hasil == 0) Text('${bil1 / bil2}'),
+                    if (hasil == 0) Text('format input 0^Y (plus + minus)1(plus + minus)0^X 1'),
                     SizedBox(
                       height: 20,
                     ),
@@ -364,7 +508,7 @@ class _PembagianState extends State<Pembagian> {
               ),
               Container(height: 50, child: _buildListView()),
               ElevatedButton(
-                  onPressed: isEnable == false && counter != bil1 + bil2
+                  onPressed: isEnable == false && counter != bil1 + bil2 +3
                       ? nextState
                       : null,
                   child: Text('NextState')),
@@ -374,12 +518,12 @@ class _PembagianState extends State<Pembagian> {
               ElevatedButton(
                   onPressed: isEnable == true ? autoStart : null,
                   child: Text('AutoStart')),
-              if (isStart == true && counter != bil1 + bil2)
+              if (isStart == true && counter != bil1 + bil2 +3)
                 ElevatedButton(
                     onPressed: pauseButton == true ? pause : unPause,
                     child:
-                    pauseButton == true ? Text('Stop') : Text('Continue')),
-              if (counter == bil1 + bil2) Text('Done!'),
+                        pauseButton == true ? Text('Stop') : Text('Continue')),
+              if (counter == bil1 + bil2 + 3) Text('Done!'),
             ],
           ),
         ),
