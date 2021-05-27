@@ -1,18 +1,13 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'tape.dart';
 
 class Modulo extends StatefulWidget {
   @override
   _ModuloState createState() => _ModuloState();
 }
 
-class Tape {
-  String value;
-  bool isHead;
-
-  Tape(this.value, this.isHead);
-}
 
 class _ModuloState extends State<Modulo> {
   var _formKey = GlobalKey<FormState>();

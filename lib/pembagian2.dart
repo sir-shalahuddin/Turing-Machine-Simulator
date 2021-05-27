@@ -1,17 +1,11 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'tape.dart';
 
 class Pembagian2 extends StatefulWidget {
   @override
   _Pembagian2State createState() => _Pembagian2State();
-}
-
-class Tape {
-  String value;
-  bool isHead;
-
-  Tape(this.value, this.isHead);
 }
 
 class _Pembagian2State extends State<Pembagian2> {
