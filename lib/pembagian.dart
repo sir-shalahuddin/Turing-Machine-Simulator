@@ -10,6 +10,7 @@ class Pembagian extends StatefulWidget {
 
 class _PembagianState extends State<Pembagian> {
   var _formKey = GlobalKey<FormState>();
+  int ans = 0;
   int bil1 = 0;
   int bil2 = 0;
   int hasil = 0;
@@ -18,9 +19,10 @@ class _PembagianState extends State<Pembagian> {
   bool isEnable = false;
   bool pauseButton;
   bool isStart;
+  bool isDone;
+  bool isAuto;
   int pil;
   int head;
-  int counter = 0;
   ScrollController controller;
   final itemSize = 50.0;
   Timer rep;
@@ -30,10 +32,13 @@ class _PembagianState extends State<Pembagian> {
   }
 
   void _submit() {
+    ans = 0;
+    isNext = false;
     isStart = false;
+    isAuto = true;
     pil = 0;
     head = 1;
-    counter = 0;
+    isDone = false;
     tape.clear();
     final isValid = _formKey.currentState.validate();
     if (!isValid) {
@@ -72,7 +77,6 @@ class _PembagianState extends State<Pembagian> {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
       head = head + 1;
-      isNext = false;
       pil = 4;
     }
   }
@@ -113,17 +117,9 @@ class _PembagianState extends State<Pembagian> {
   }
 
   state3() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
-    } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
-    } else if (tape[head].value == '0') {
+    if (tape[head].value == 'x' ||
+        tape[head].value == '1' ||
+        tape[head].value == '0') {
       tape[head].isHead = false;
       tape[head - 1].isHead = true;
       head = head - 1;
@@ -138,12 +134,7 @@ class _PembagianState extends State<Pembagian> {
   }
 
   state4() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 4;
-    } else if (tape[head].value == '0') {
+    if (tape[head].value == 'x' || tape[head].value == '0') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
       head = head + 1;
@@ -163,6 +154,7 @@ class _PembagianState extends State<Pembagian> {
       tape[head - 1].isHead = true;
       head = head - 1;
       pil = 6;
+      ans++;
     } else if (tape[head].value == '0') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
@@ -172,17 +164,9 @@ class _PembagianState extends State<Pembagian> {
   }
 
   state6() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
-    } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
-    } else if (tape[head].value == '0') {
+    if (tape[head].value == 'x' ||
+        tape[head].value == '1' ||
+        tape[head].value == '0') {
       tape[head].isHead = false;
       tape[head - 1].isHead = true;
       head = head - 1;
@@ -196,25 +180,25 @@ class _PembagianState extends State<Pembagian> {
   }
 
   state7() {
-    if (tape[head].value == 'x') {
+    if (tape[head].value == 'x' ||
+        tape[head].value == '1' ||
+        tape[head].value == '0') {
       tape[head].value = 'b';
       tape[head].isHead = false;
       tape[head - 1].isHead = true;
       head = head - 1;
       pil = 7;
-    } else if (tape[head].value == '1') {
+    } else if (tape[head].value == 'b') {
       tape[head].value = 'b';
       tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 7;
-    } else if (tape[head].value == '0') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 7;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 8;
     }
+  }
+
+  state8() {
+    isDone = true;
   }
 
   void nextState() {
@@ -243,28 +227,33 @@ class _PembagianState extends State<Pembagian> {
         state6();
         break;
       case 7:
-        counter++;
         state7();
+        break;
+      case 8:
+        state8();
         break;
     }
     setState(() {});
   }
 
   void start() {
+    isNext = true;
     isEnable = false;
     tape[head].isHead = true;
     setState(() {});
   }
 
   void autoStart() {
+    isAuto = false;
     pauseButton = true;
+    isNext = false;
     isStart = true;
     isEnable = false;
     tape[head].isHead = true;
     setState(() {});
     rep = Timer.periodic(Duration(milliseconds: 400), (rep) {
       nextState();
-      if (counter == bil1 + bil2) {
+      if (isDone == true) {
         setState(() {
           rep.cancel();
         });
@@ -273,6 +262,7 @@ class _PembagianState extends State<Pembagian> {
   }
 
   void pause() {
+    isNext = true;
     pauseButton = false;
     setState(() {
       rep.cancel();
@@ -283,7 +273,7 @@ class _PembagianState extends State<Pembagian> {
     pauseButton = true;
     rep = Timer.periodic(Duration(milliseconds: 400), (rep) {
       nextState();
-      if (counter == bil1 + bil2) {
+      if (isDone == true) {
         setState(() {
           rep.cancel();
         });
@@ -318,7 +308,7 @@ class _PembagianState extends State<Pembagian> {
                     TextFormField(
                       keyboardType: TextInputType.number,
                       decoration:
-                      InputDecoration(labelText: 'Masukkan bilangan X'),
+                          InputDecoration(labelText: 'Masukkan bilangan X'),
                       onSaved: (String value) {
                         bil1 = int.parse(value);
                       },
@@ -332,7 +322,7 @@ class _PembagianState extends State<Pembagian> {
                     TextFormField(
                         keyboardType: TextInputType.number,
                         decoration:
-                        InputDecoration(labelText: 'Masukkan bilangan Y'),
+                            InputDecoration(labelText: 'Masukkan bilangan Y'),
                         onSaved: (String value) {
                           bil2 = int.parse(value);
                         },
@@ -350,7 +340,7 @@ class _PembagianState extends State<Pembagian> {
                         },
                         child: Text('Process')),
                     if (hasil != 0) Text('Not Applicable'),
-                    if (hasil == 0) Text('${bil1 / bil2}'),
+                    if (hasil == 0 && isDone == true) Text('The Result : $ans'),
                     SizedBox(
                       height: 20,
                     ),
@@ -359,22 +349,21 @@ class _PembagianState extends State<Pembagian> {
               ),
               Container(height: 50, child: _buildListView()),
               ElevatedButton(
-                  onPressed: isEnable == false && counter != bil1 + bil2
-                      ? nextState
-                      : null,
+                  onPressed:
+                      isNext == true && isDone != true ? nextState : null,
                   child: Text('NextState')),
               ElevatedButton(
                   onPressed: isEnable == true ? start : null,
                   child: Text('Start')),
               ElevatedButton(
-                  onPressed: isEnable == true ? autoStart : null,
+                  onPressed: isAuto == true ? autoStart : null,
                   child: Text('AutoStart')),
-              if (isStart == true && counter != bil1 + bil2)
+              if (isStart == true && isDone != true)
                 ElevatedButton(
                     onPressed: pauseButton == true ? pause : unPause,
                     child:
-                    pauseButton == true ? Text('Stop') : Text('Continue')),
-              if (counter == bil1 + bil2) Text('Done!'),
+                        pauseButton == true ? Text('Stop') : Text('Continue')),
+              if (isDone == true) Text('Done!'),
             ],
           ),
         ),

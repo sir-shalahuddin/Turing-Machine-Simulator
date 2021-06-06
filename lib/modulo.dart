@@ -8,20 +8,21 @@ class Modulo extends StatefulWidget {
   _ModuloState createState() => _ModuloState();
 }
 
-
 class _ModuloState extends State<Modulo> {
   var _formKey = GlobalKey<FormState>();
+  int ans = 0;
   int bil1 = 0;
   int bil2 = 0;
-  double hasil;
+  int hasil = 0;
   List<Tape> tape = [];
   bool isNext;
   bool isEnable = false;
   bool pauseButton;
   bool isStart;
+  bool isDone;
+  bool isAuto;
   int pil;
   int head;
-  int counter = 0;
   ScrollController controller;
   final itemSize = 50.0;
   Timer rep;
@@ -31,10 +32,13 @@ class _ModuloState extends State<Modulo> {
   }
 
   void _submit() {
+    ans = 0;
+    isNext = false;
     isStart = false;
+    isAuto = true;
     pil = 0;
     head = 1;
-    counter = 0;
+    isDone = false;
     tape.clear();
     final isValid = _formKey.currentState.validate();
     if (!isValid) {
@@ -55,7 +59,7 @@ class _ModuloState extends State<Modulo> {
     }
 
     setState(() {
-      hasil = bil1.toDouble() % bil2.toDouble();
+      hasil = bil1 % bil2;
     });
   }
 
@@ -132,6 +136,7 @@ class _ModuloState extends State<Modulo> {
       tape[head + 1].isHead = true;
       head = head + 1;
       pil = 0;
+      ans++;
     }
   }
 
@@ -185,6 +190,7 @@ class _ModuloState extends State<Modulo> {
       tape[head + 1].isHead = true;
       head = head + 1;
       pil = 0;
+      ans = 0;
     }
   }
 
@@ -208,6 +214,17 @@ class _ModuloState extends State<Modulo> {
       head = head - 1;
       pil = 7;
     }
+    else if (tape[head].value == 'b') {
+      tape[head].value = 'b';
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 8;
+    }
+  }
+
+  state8() {
+    isDone = true;
   }
 
   void nextState() {
@@ -236,28 +253,33 @@ class _ModuloState extends State<Modulo> {
         state6();
         break;
       case 7:
-        counter++;
         state7();
+        break;
+      case 8:
+        state8();
         break;
     }
     setState(() {});
   }
 
   void start() {
+    isNext = true;
     isEnable = false;
     tape[head].isHead = true;
     setState(() {});
   }
 
   void autoStart() {
+    isAuto = false;
     pauseButton = true;
+    isNext = false;
     isStart = true;
     isEnable = false;
     tape[head].isHead = true;
     setState(() {});
     rep = Timer.periodic(Duration(milliseconds: 400), (rep) {
       nextState();
-      if (counter == bil1 + bil2) {
+      if (isDone == true) {
         setState(() {
           rep.cancel();
         });
@@ -266,6 +288,7 @@ class _ModuloState extends State<Modulo> {
   }
 
   void pause() {
+    isNext = true;
     pauseButton = false;
     setState(() {
       rep.cancel();
@@ -276,7 +299,7 @@ class _ModuloState extends State<Modulo> {
     pauseButton = true;
     rep = Timer.periodic(Duration(milliseconds: 400), (rep) {
       nextState();
-      if (counter == bil1 + bil2) {
+      if (isDone == true) {
         setState(() {
           rep.cancel();
         });
@@ -343,7 +366,7 @@ class _ModuloState extends State<Modulo> {
                           setState(() {});
                         },
                         child: Text('Process')),
-                    Text('$hasil'),
+                    if (isDone == true) Text('The Result : $hasil'),
                     SizedBox(
                       height: 20,
                     ),
@@ -352,22 +375,21 @@ class _ModuloState extends State<Modulo> {
               ),
               Container(height: 50, child: _buildListView()),
               ElevatedButton(
-                  onPressed: isEnable == false && counter != bil1 + bil2
-                      ? nextState
-                      : null,
+                  onPressed:
+                      isNext == true && isDone != true ? nextState : null,
                   child: Text('NextState')),
               ElevatedButton(
                   onPressed: isEnable == true ? start : null,
                   child: Text('Start')),
               ElevatedButton(
-                  onPressed: isEnable == true ? autoStart : null,
+                  onPressed: isAuto == true ? autoStart : null,
                   child: Text('AutoStart')),
-              if (isStart == true && counter != bil1 + bil2)
+              if (isStart == true && isDone != true)
                 ElevatedButton(
                     onPressed: pauseButton == true ? pause : unPause,
                     child:
                         pauseButton == true ? Text('Stop') : Text('Continue')),
-              if (counter == bil1 + bil2) Text('Done!'),
+              if (isDone == true) Text('Done!'),
             ],
           ),
         ),
