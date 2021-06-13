@@ -45,28 +45,27 @@ class _PerkalianState extends State<Perkalian> {
       return;
     }
     _formKey.currentState.save();
-    hasil = bil1 % bil2;
 
-    if (hasil == 0) {
-      double tes = bil1 * bil2;
-      int item = bil1 + bil2 + 4 + tes.toInt();
-      for (int i = 0; i < item; i++) {
-        if (i == 0 || i == item - 1 - tes)
-          tape.add(Tape('b', false));
-        else if (i == bil2 + 1)
-          tape.add(Tape('1', false));
-        else if (i == item - 2 - tes)
-          tape.add(Tape('1', false));
-        else if (i >= item - tes)
-          tape.add(Tape('b', false));
-        else
-          tape.add(Tape('0', false));
-      }
+    int tes = bil1 * bil2;
+    int item = bil1 + bil2 + 4 + tes.toInt();
+    for (int i = 0; i < item; i++) {
+      if (i == 0 || i == item - 1 - tes)
+        tape.add(Tape('b', false));
+      else if (i == bil2 + 1)
+        tape.add(Tape('1', false));
+      else if (i == item - 2 - tes)
+        tape.add(Tape('1', false));
+      else if (i >= item - tes)
+        tape.add(Tape('b', false));
+      else
+        tape.add(Tape('0', false));
     }
+
     setState(() {});
   }
 
   state0() {
+    print(0);
     if (tape[head].value == '0') {
       tape[head].value = 'b';
       tape[head].isHead = false;
@@ -83,6 +82,7 @@ class _PerkalianState extends State<Perkalian> {
   }
 
   state1() {
+    print(1);
     if (tape[head].value == '0') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
@@ -97,8 +97,9 @@ class _PerkalianState extends State<Perkalian> {
   }
 
   state2() {
+    print(2);
     if (tape[head].value == '0') {
-      tape[head].value = 'x';
+      tape[head].value = 'Y';
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
       head = head + 1;
@@ -112,28 +113,29 @@ class _PerkalianState extends State<Perkalian> {
   }
 
   state3() {
-    if (tape[head].value == '1' ||
-        tape[head].value == '0') {
+    print(3);
+    if (tape[head].value == '1' || tape[head].value == '0') {
       tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
+      tape[head + 1].isHead = true;
+      head = head + 1;
       pil = 3;
     } else if (tape[head].value == 'b') {
       tape[head].value = '0';
       tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
+      tape[head - 1].isHead = true;
+      head = head - 1;
       pil = 4;
     }
   }
 
   state4() {
+    print(4);
     if (tape[head].value == '1' || tape[head].value == '0') {
       tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
+      tape[head - 1].isHead = true;
+      head = head - 1;
       pil = 4;
-    } else if (tape[head].value == 'x') {
+    } else if (tape[head].value == 'Y') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
       head = head + 1;
@@ -142,18 +144,18 @@ class _PerkalianState extends State<Perkalian> {
   }
 
   state5() {
-    if (tape[head].value == 'x' ||
-        tape[head].value == '0') {
+    print(5);
+    if (tape[head].value == 'Y' || tape[head].value == '0') {
+      if (tape[head].value == 'Y') ans++;
       tape[head].value = '0';
       tape[head].isHead = false;
       tape[head - 1].isHead = true;
       head = head - 1;
       pil = 5;
-      ans++;
     } else if (tape[head].value == '1') {
       tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
+      tape[head - 1].isHead = true;
+      head = head - 1;
       pil = 5;
     } else if (tape[head].value == 'b') {
       tape[head].isHead = false;
@@ -164,11 +166,12 @@ class _PerkalianState extends State<Perkalian> {
   }
 
   state6() {
+    print(6);
     if (tape[head].value == '0') {
       tape[head].value = 'b';
       tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
+      tape[head + 1].isHead = true;
+      head = head + 1;
       pil = 6;
     } else if (tape[head].value == '1') {
       tape[head].value = 'b';
@@ -180,16 +183,16 @@ class _PerkalianState extends State<Perkalian> {
   }
 
   state7() {
+    print(7);
     if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 7;
-    } else if (tape[head].value == 'b') {
-      tape[head].value = '1';
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
       head = head + 1;
+      pil = 7;
+    } else if (tape[head].value == 'b') {
+      tape[head].isHead = false;
+      tape[head - 1].isHead = true;
+      head = head - 1;
       pil = 8;
     }
   }
@@ -305,7 +308,7 @@ class _PerkalianState extends State<Perkalian> {
                     TextFormField(
                       keyboardType: TextInputType.number,
                       decoration:
-                      InputDecoration(labelText: 'Masukkan bilangan X'),
+                          InputDecoration(labelText: 'Masukkan bilangan X'),
                       onSaved: (String value) {
                         bil1 = int.parse(value);
                       },
@@ -319,7 +322,7 @@ class _PerkalianState extends State<Perkalian> {
                     TextFormField(
                         keyboardType: TextInputType.number,
                         decoration:
-                        InputDecoration(labelText: 'Masukkan bilangan Y'),
+                            InputDecoration(labelText: 'Masukkan bilangan Y'),
                         onSaved: (String value) {
                           bil2 = int.parse(value);
                         },
@@ -347,7 +350,7 @@ class _PerkalianState extends State<Perkalian> {
               Container(height: 50, child: _buildListView()),
               ElevatedButton(
                   onPressed:
-                  isNext == true && isDone != true ? nextState : null,
+                      isNext == true && isDone != true ? nextState : null,
                   child: Text('NextState')),
               ElevatedButton(
                   onPressed: isEnable == true ? start : null,
@@ -359,7 +362,7 @@ class _PerkalianState extends State<Perkalian> {
                 ElevatedButton(
                     onPressed: pauseButton == true ? pause : unPause,
                     child:
-                    pauseButton == true ? Text('Stop') : Text('Continue')),
+                        pauseButton == true ? Text('Stop') : Text('Continue')),
               if (isDone == true) Text('Done!'),
             ],
           ),
