@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tm/pembagian.dart';
+import 'package:tm/pembagian2.dart';
 import 'package:tm/perkalian.dart';
 
 import 'modulo.dart';

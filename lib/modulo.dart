@@ -27,6 +27,18 @@ class _ModuloState extends State<Modulo> {
   final itemSize = 50.0;
   Timer rep;
 
+  transition(int next, String output, String move) {
+    int moves = 0;
+    if (move == 'R')
+      moves = 1;
+    else if (move == 'L') moves = -1;
+    tape[head].value = output;
+    tape[head].isHead = false;
+    tape[head + moves].isHead = true;
+    head = head + moves;
+    pil = next;
+  }
+
   _enableButton() {
     isEnable = true;
   }
@@ -65,161 +77,73 @@ class _ModuloState extends State<Modulo> {
 
   state0() {
     if (tape[head].value == '0') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 1;
+      transition(1, 'b', 'R');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      isNext = false;
-      pil = 4;
+      transition(4, tape[head].value, 'R');
     }
   }
 
   state1() {
     if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 1;
+      transition(1, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 2;
+      transition(2, tape[head].value, 'R');
     }
   }
 
   state2() {
     if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 2;
+      transition(2, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 7;
+      transition(7, 'b', 'L');
     } else if (tape[head].value == '0') {
-      tape[head].value = 'x';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
+      transition(3, 'x', 'L');
     }
   }
 
   state3() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
-    } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
-    } else if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
+    if (tape[head].value == 'x' ||
+        tape[head].value == '1' ||
+        tape[head].value == '0') {
+      transition(3, tape[head].value, 'L');
     } else if (tape[head].value == 'b') {
-      tape[head].value = '0';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 0;
+      transition(0, '0', 'R');
       ans++;
     }
   }
 
   state4() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 4;
-    } else if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 4;
+    if (tape[head].value == 'x' || tape[head].value == '0') {
+      transition(4, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 5;
+      transition(5, tape[head].value, 'R');
     }
   }
 
   state5() {
     if (tape[head].value == 'b') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
+      transition(6, tape[head].value, 'L');
     }
   }
 
   state6() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
-    } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
-    } else if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
+    if (tape[head].value == 'x' ||
+        tape[head].value == '1' ||
+        tape[head].value == '0') {
+      transition(6, tape[head].value, 'L');
     } else if (tape[head].value == 'b') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 0;
+      transition(0, tape[head].value, 'R');
       ans = 0;
     }
   }
 
   state7() {
-    if (tape[head].value == 'x') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 7;
-    } else if (tape[head].value == '1') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 7;
-    } else if (tape[head].value == '0') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 7;
-    }
-    else if (tape[head].value == 'b') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 8;
+    if (tape[head].value == 'x' ||
+        tape[head].value == '0' ||
+        tape[head].value == '1') {
+      transition(7, 'b', 'L');
+    } else if (tape[head].value == 'b') {
+      transition(8, 'b', 'R');
     }
   }
 

@@ -10,6 +10,8 @@ class Pembagian2 extends StatefulWidget {
 
 class _Pembagian2State extends State<Pembagian2> {
   var _formKey = GlobalKey<FormState>();
+  String sign;
+  int ans = 0;
   int bil1 = 0;
   int bil2 = 0;
   int bil1new=0;
@@ -20,6 +22,8 @@ class _Pembagian2State extends State<Pembagian2> {
   bool isEnable = false;
   bool pauseButton;
   bool isStart;
+  bool isDone;
+  bool isAuto;
   int pil;
   int head;
   int counter = 0;
@@ -32,10 +36,13 @@ class _Pembagian2State extends State<Pembagian2> {
   }
 
   void _submit() {
+    ans = 0;
+    isNext = false;
     isStart = false;
+    isAuto = true;
     pil = 0;
     head = 1;
-    counter = 0;
+    isDone = false;
     tape.clear();
     final isValid = _formKey.currentState.validate();
     if (!isValid) {
@@ -52,9 +59,9 @@ class _Pembagian2State extends State<Pembagian2> {
         if (i == 0 || i == item - 1 - tes)
           tape.add(Tape('b', false));
         else if (i == bil2+1)
-          bil1new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
-        else if (i == bil2 + 3)
           bil2new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
+        else if (i == bil2 + 3)
+          bil1new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
         else if (i == bil2 + 2)
           tape.add(Tape('1', false));
         else if (i == item - 3 - tes)
@@ -122,6 +129,7 @@ class _Pembagian2State extends State<Pembagian2> {
       tape[head - 1].isHead = true;
       head = head - 1;
       pil = 3;
+      sign='-';
     } else if (tape[head].value == '0' || tape[head].value == '1') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
@@ -161,7 +169,7 @@ class _Pembagian2State extends State<Pembagian2> {
       tape[head + 1].isHead = true;
       head = head + 1;
       // isNext = false;
-      pil = 3;
+      pil = 2;
     } else if (tape[head].value == '0' || tape[head].value == '1') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
@@ -178,6 +186,7 @@ class _Pembagian2State extends State<Pembagian2> {
       tape[head - 1].isHead = true;
       head = head - 1;
       pil = 3;
+      sign='+';
     } else if (tape[head].value == '0' || tape[head].value == '1') {
       tape[head].isHead = false;
       tape[head + 1].isHead = true;
@@ -296,6 +305,7 @@ class _Pembagian2State extends State<Pembagian2> {
       tape[head - 1].isHead = true;
       head = head - 1;
       pil = 12;
+      ans++;
     } else if (tape[head].value == '0' ||
         tape[head].value == '-' ||
         tape[head].value == '+') {
@@ -337,7 +347,18 @@ class _Pembagian2State extends State<Pembagian2> {
       tape[head - 1].isHead = true;
       head = head - 1;
       pil = 13;
+    }else if(tape[head].value == 'b'){
+      tape[head].value = 'b';
+      tape[head].isHead = false;
+      tape[head + 1].isHead = true;
+      head = head + 1;
+      pil = 14;
     }
+  }
+
+  state14(){
+    print(14);
+    isDone=true;
   }
 
   void nextState() {
@@ -384,28 +405,33 @@ class _Pembagian2State extends State<Pembagian2> {
         state12();
         break;
       case 13:
-        counter++;
         state13();
+        break;
+      case 14:
+        state14();
         break;
     }
     setState(() {});
   }
 
   void start() {
+    isNext = true;
     isEnable = false;
     tape[head].isHead = true;
     setState(() {});
   }
 
   void autoStart() {
+    isAuto = false;
     pauseButton = true;
+    isNext = false;
     isStart = true;
     isEnable = false;
     tape[head].isHead = true;
     setState(() {});
     rep = Timer.periodic(Duration(milliseconds: 400), (rep) {
       nextState();
-      if (counter == bil1 + bil2 + 3) {
+      if (isDone == true) {
         setState(() {
           rep.cancel();
         });
@@ -414,6 +440,7 @@ class _Pembagian2State extends State<Pembagian2> {
   }
 
   void pause() {
+    isNext = true;
     pauseButton = false;
     setState(() {
       rep.cancel();
@@ -424,13 +451,14 @@ class _Pembagian2State extends State<Pembagian2> {
     pauseButton = true;
     rep = Timer.periodic(Duration(milliseconds: 400), (rep) {
       nextState();
-      if (counter == bil1 + bil2 + 3) {
+      if (isDone == true) {
         setState(() {
           rep.cancel();
         });
       }
     });
   }
+
 
   @override
   void initState() {
@@ -493,7 +521,7 @@ class _Pembagian2State extends State<Pembagian2> {
                         },
                         child: Text('Process')),
                     if (hasil != 0) Text('Not Applicable'),
-                    if (hasil == 0) Text('format input 0^Y (plus + minus)1(plus + minus)0^X 1'),
+                    if (hasil == 0 && isDone == true) Text('The Result : $sign$ans'),
                     SizedBox(
                       height: 20,
                     ),
@@ -502,22 +530,21 @@ class _Pembagian2State extends State<Pembagian2> {
               ),
               Container(height: 50, child: _buildListView()),
               ElevatedButton(
-                  onPressed: isEnable == false && counter != bil1 + bil2 +3
-                      ? nextState
-                      : null,
+                  onPressed:
+                  isNext == true && isDone != true ? nextState : null,
                   child: Text('NextState')),
               ElevatedButton(
                   onPressed: isEnable == true ? start : null,
                   child: Text('Start')),
               ElevatedButton(
-                  onPressed: isEnable == true ? autoStart : null,
+                  onPressed: isAuto == true ? autoStart : null,
                   child: Text('AutoStart')),
-              if (isStart == true && counter != bil1 + bil2 +3)
+              if (isStart == true && isDone != true)
                 ElevatedButton(
                     onPressed: pauseButton == true ? pause : unPause,
                     child:
-                        pauseButton == true ? Text('Stop') : Text('Continue')),
-              if (counter == bil1 + bil2 + 3) Text('Done!'),
+                    pauseButton == true ? Text('Stop') : Text('Continue')),
+              if (isDone == true) Text('Done!'),
             ],
           ),
         ),
