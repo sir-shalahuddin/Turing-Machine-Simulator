@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tm/pembagian.dart';
+import 'package:tm/pembagian2.dart';
 import 'package:tm/perkalian.dart';
 
 import 'modulo.dart';
@@ -119,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Pembagian()));
+                                        builder: (context) => Pembagian2()));
                               },
                               child: Text('Pembagian'),
                             )))

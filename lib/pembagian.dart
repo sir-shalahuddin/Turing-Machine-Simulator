@@ -26,6 +26,18 @@ class _PembagianState extends State<Pembagian> {
   final itemSize = 50.0;
   Timer rep;
 
+  transition(int next, String output, String move) {
+    int moves = 0;
+    if (move == 'R')
+      moves = 1;
+    else if (move == 'L') moves = -1;
+    tape[head].value = output;
+    tape[head].isHead = false;
+    tape[head + moves].isHead = true;
+    head = head + moves;
+    pil = next;
+  }
+
   _enableButton() {
     isEnable = true;
   }
@@ -67,132 +79,74 @@ class _PembagianState extends State<Pembagian> {
 
   state0() {
     if (tape[head].value == '0') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 1;
+      transition(1, 'b', 'R');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 4;
+      transition(4, '1', 'R');
     }
   }
 
   state1() {
     if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 1;
+      transition(1, '0', 'R');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 2;
+      transition(2, '1', 'R');
     }
   }
 
   state2() {
-    if (tape[head].value == 'x') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 2;
+    if (tape[head].value == 'X') {
+      transition(2, 'X', 'R');
     } else if (tape[head].value == '1') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 7;
+      transition(7, 'b', 'L');
     } else if (tape[head].value == '0') {
-      tape[head].value = 'x';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
+      transition(3, 'X', 'L');
     }
   }
 
   state3() {
-    if (tape[head].value == 'x' ||
+    if (tape[head].value == 'X' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
+      transition(3, tape[head].value, 'L');
     } else if (tape[head].value == 'b') {
-      tape[head].value = '0';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 0;
+      transition(0, '0', 'R');
     }
   }
 
   state4() {
-    if (tape[head].value == 'x' || tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 4;
+    if (tape[head].value == 'X' || tape[head].value == '0') {
+      transition(4, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 5;
+      transition(5, tape[head].value, 'R');
     }
   }
 
   state5() {
     if (tape[head].value == 'b') {
-      tape[head].value = '0';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
+      transition(6, '0', 'L');
       ans++;
     } else if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 5;
+      transition(5, tape[head].value, 'R');
     }
   }
 
   state6() {
-    if (tape[head].value == 'x' ||
+    if (tape[head].value == 'X' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 6;
+      transition(6, tape[head].value, 'L');
     } else if (tape[head].value == 'b') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 0;
+      transition(0, tape[head].value, 'R');
     }
   }
 
   state7() {
-    if (tape[head].value == 'x' ||
+    if (tape[head].value == 'X' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 7;
+      transition(7, 'b', 'L');
     } else if (tape[head].value == 'b') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 8;
+      transition(8, tape[head].value, 'R');
     }
   }
 
@@ -289,81 +243,86 @@ class _PembagianState extends State<Pembagian> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Pembagian'),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.all(8),
-          child: Column(
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Text('X / Y'),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration:
-                          InputDecoration(labelText: 'Masukkan bilangan X'),
-                      onSaved: (String value) {
-                        bil1 = int.parse(value);
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Harus diisi';
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Pembagian'),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.all(8),
+            child: Column(
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Text('X / Y'),
+                      TextFormField(
                         keyboardType: TextInputType.number,
                         decoration:
-                            InputDecoration(labelText: 'Masukkan bilangan Y'),
+                            InputDecoration(labelText: 'Masukkan bilangan X'),
                         onSaved: (String value) {
-                          bil2 = int.parse(value);
+                          bil1 = int.parse(value);
                         },
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Harus diisi';
                           }
                           return null;
-                        }),
-                    ElevatedButton(
-                        onPressed: () {
-                          _enableButton();
-                          _submit();
-                          setState(() {});
                         },
-                        child: Text('Process')),
-                    if (hasil != 0) Text('Not Applicable'),
-                    if (hasil == 0 && isDone == true) Text('The Result : $ans'),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
+                      ),
+                      TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration:
+                              InputDecoration(labelText: 'Masukkan bilangan Y'),
+                          onSaved: (String value) {
+                            bil2 = int.parse(value);
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Harus diisi';
+                            }
+                            return null;
+                          }),
+                      ElevatedButton(
+                          onPressed: () {
+                            _enableButton();
+                            _submit();
+                            setState(() {});
+                          },
+                          child: Text('Process')),
+                      if (hasil != 0) Text('Not Applicable'),
+                      if (hasil == 0 && isDone == true)
+                        Text('The Result : $ans'),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Container(height: 50, child: _buildListView()),
-              ElevatedButton(
-                  onPressed:
-                      isNext == true && isDone != true ? nextState : null,
-                  child: Text('NextState')),
-              ElevatedButton(
-                  onPressed: isEnable == true ? start : null,
-                  child: Text('Start')),
-              ElevatedButton(
-                  onPressed: isAuto == true ? autoStart : null,
-                  child: Text('AutoStart')),
-              if (isStart == true && isDone != true)
+                Container(height: 50, child: _buildListView()),
                 ElevatedButton(
-                    onPressed: pauseButton == true ? pause : unPause,
-                    child:
-                        pauseButton == true ? Text('Stop') : Text('Continue')),
-              if (isDone == true) Text('Done!'),
-            ],
+                    onPressed:
+                        isNext == true && isDone != true ? nextState : null,
+                    child: Text('NextState')),
+                ElevatedButton(
+                    onPressed: isEnable == true ? start : null,
+                    child: Text('Start')),
+                ElevatedButton(
+                    onPressed: isAuto == true ? autoStart : null,
+                    child: Text('AutoStart')),
+                if (isStart == true && isDone != true)
+                  ElevatedButton(
+                      onPressed: pauseButton == true ? pause : unPause,
+                      child: pauseButton == true
+                          ? Text('Stop')
+                          : Text('Continue')),
+                if (isDone == true) Text('Done!'),
+              ],
+            ),
           ),
         ),
       ),
