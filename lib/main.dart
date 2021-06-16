@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Pembagian()));
+                                        builder: (context) => Pembagian2()));
                               },
                               child: Text('Pembagian'),
                             )))

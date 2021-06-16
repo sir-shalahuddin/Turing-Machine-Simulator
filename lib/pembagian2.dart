@@ -14,8 +14,8 @@ class _Pembagian2State extends State<Pembagian2> {
   int ans = 0;
   int bil1 = 0;
   int bil2 = 0;
-  int bil1new=0;
-  int bil2new=0;
+  int bil1new = 0;
+  int bil2new = 0;
   int hasil = 0;
   List<Tape> tape = [];
   bool isNext;
@@ -30,6 +30,18 @@ class _Pembagian2State extends State<Pembagian2> {
   ScrollController controller;
   final itemSize = 50.0;
   Timer rep;
+
+  transition(int next, String output, String move) {
+    int moves = 0;
+    if (move == 'R')
+      moves = 1;
+    else if (move == 'L') moves = -1;
+    tape[head].value = output;
+    tape[head].isHead = false;
+    tape[head + moves].isHead = true;
+    head = head + moves;
+    pil = next;
+  }
 
   _enableButton() {
     isEnable = true;
@@ -58,7 +70,7 @@ class _Pembagian2State extends State<Pembagian2> {
       for (int i = 0; i < item; i++) {
         if (i == 0 || i == item - 1 - tes)
           tape.add(Tape('b', false));
-        else if (i == bil2+1)
+        else if (i == bil2 + 1)
           bil2new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
         else if (i == bil2 + 3)
           bil1new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
@@ -73,148 +85,82 @@ class _Pembagian2State extends State<Pembagian2> {
       }
     }
 
-
     setState(() {});
   }
 
   state0() {
     print(0);
     if (tape[head].value == '-') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 1;
-    }
-    else if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 0;
-    }
-    else if (tape[head].value == '+') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      // isNext = false;
-      pil = 4;
+      transition(1, '-', 'R');
+    } else if (tape[head].value == '0') {
+      transition(0, '0', 'R');
+    } else if (tape[head].value == '+') {
+      transition(4, '+', 'R');
     }
   }
 
   state1() {
     print(1);
     if (tape[head].value == '-') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 5;
+      transition(5, '-', 'R');
     } else if (tape[head].value == '+') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      // isNext = false;
-      pil = 2;
+      transition(2, '+', 'R');
     } else if (tape[head].value == '0' || tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 1;
+      transition(1, tape[head].value, 'R');
     }
   }
 
   state2() {
     print(2);
     if (tape[head].value == 'b') {
-      tape[head].value = '-';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
-      sign='-';
+      transition(3, '-', 'L');
+      sign = '-';
     } else if (tape[head].value == '0' || tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 2;
+      transition(2, tape[head].value, 'R');
     }
   }
 
   state3() {
     print(3);
     if (tape[head].value == 'b') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 6;
+      transition(6, 'b', 'R');
     } else if (tape[head].value == '0' ||
         tape[head].value == '1' ||
         tape[head].value == '-' ||
         tape[head].value == '+') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
+      transition(3, tape[head].value, 'L');
     }
   }
 
   state4() {
     print(4);
     if (tape[head].value == '+') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 5;
+      transition(5, '+', 'R');
     } else if (tape[head].value == '-') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      // isNext = false;
-      pil = 2;
+      transition(2, '-', 'R');
     } else if (tape[head].value == '0' || tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 4;
+      transition(4, tape[head].value, 'R');
     }
   }
 
   state5() {
     print(5);
     if (tape[head].value == 'b') {
-      tape[head].value = '+';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 3;
-      sign='+';
+      transition(3, '+', 'L');
+      sign = '+';
     } else if (tape[head].value == '0' || tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 5;
+      transition(5, tape[head].value, 'R');
     }
   }
 
   state6() {
     print(6);
     if (tape[head].value == '0') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 7;
+      transition(7, 'b', 'R');
     } else if (tape[head].value == '-' || tape[head].value == '+') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      // isNext = false;
-      pil = 6;
+      transition(6, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      tape[head].value = '1';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 10;
+      transition(10, '1', 'R');
     }
   }
 
@@ -223,15 +169,9 @@ class _Pembagian2State extends State<Pembagian2> {
     if (tape[head].value == '0' ||
         tape[head].value == '-' ||
         tape[head].value == '+') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 7;
+      transition(7, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 8;
+      transition(8, '1', 'R');
     }
   }
 
@@ -240,22 +180,11 @@ class _Pembagian2State extends State<Pembagian2> {
     if (tape[head].value == 'x' ||
         tape[head].value == '-' ||
         tape[head].value == '+') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 8;
+      transition(8, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 13;
+      transition(13, 'b', 'L');
     } else if (tape[head].value == '0') {
-      tape[head].value = 'x';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 9;
+      transition(9, 'x', 'L');
     }
   }
 
@@ -266,16 +195,9 @@ class _Pembagian2State extends State<Pembagian2> {
         tape[head].value == '+' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 9;
+      transition(9, tape[head].value, 'L');
     } else if (tape[head].value == 'b') {
-      tape[head].value = '0';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 6;
+      transition(6, '0', 'R');
     }
   }
 
@@ -285,34 +207,22 @@ class _Pembagian2State extends State<Pembagian2> {
         tape[head].value == '0' ||
         tape[head].value == '-' ||
         tape[head].value == '+') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
       pil = 10;
+      transition(10, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 11;
+      transition(11, '1', 'R');
     }
   }
 
   state11() {
     print(11);
     if (tape[head].value == 'b') {
-      tape[head].value = '0';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 12;
+      transition(12, '0', 'L');
       ans++;
     } else if (tape[head].value == '0' ||
         tape[head].value == '-' ||
         tape[head].value == '+') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 11;
+      transition(11, tape[head].value , 'R');
     }
   }
 
@@ -323,15 +233,9 @@ class _Pembagian2State extends State<Pembagian2> {
         tape[head].value == '+' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 12;
+      transition(12, tape[head].value , 'L');
     } else if (tape[head].value == 'b') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 6;
+      transition(6, 'b', 'R');
     }
   }
 
@@ -342,23 +246,15 @@ class _Pembagian2State extends State<Pembagian2> {
         tape[head].value == '+' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 13;
-    }else if(tape[head].value == 'b'){
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 14;
+      transition(13, 'b', 'L');
+    } else if (tape[head].value == 'b') {
+      transition(14, 'b', 'R');
     }
   }
 
-  state14(){
+  state14() {
     print(14);
-    isDone=true;
+    isDone = true;
   }
 
   void nextState() {
@@ -459,7 +355,6 @@ class _Pembagian2State extends State<Pembagian2> {
     });
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -490,7 +385,7 @@ class _Pembagian2State extends State<Pembagian2> {
                           InputDecoration(labelText: 'Masukkan bilangan X'),
                       onSaved: (String value) {
                         bil1new = int.parse(value);
-                        bil1= bil1new.abs();
+                        bil1 = bil1new.abs();
                       },
                       validator: (value) {
                         if (value.isEmpty) {
@@ -505,7 +400,7 @@ class _Pembagian2State extends State<Pembagian2> {
                             InputDecoration(labelText: 'Masukkan bilangan Y'),
                         onSaved: (String value) {
                           bil2new = int.parse(value);
-                          bil2=bil2new.abs();
+                          bil2 = bil2new.abs();
                         },
                         validator: (value) {
                           if (value.isEmpty) {
@@ -521,7 +416,8 @@ class _Pembagian2State extends State<Pembagian2> {
                         },
                         child: Text('Process')),
                     if (hasil != 0) Text('Not Applicable'),
-                    if (hasil == 0 && isDone == true) Text('The Result : $sign$ans'),
+                    if (hasil == 0 && isDone == true)
+                      Text('The Result : $sign$ans'),
                     SizedBox(
                       height: 20,
                     ),
@@ -531,7 +427,7 @@ class _Pembagian2State extends State<Pembagian2> {
               Container(height: 50, child: _buildListView()),
               ElevatedButton(
                   onPressed:
-                  isNext == true && isDone != true ? nextState : null,
+                      isNext == true && isDone != true ? nextState : null,
                   child: Text('NextState')),
               ElevatedButton(
                   onPressed: isEnable == true ? start : null,
@@ -543,7 +439,7 @@ class _Pembagian2State extends State<Pembagian2> {
                 ElevatedButton(
                     onPressed: pauseButton == true ? pause : unPause,
                     child:
-                    pauseButton == true ? Text('Stop') : Text('Continue')),
+                        pauseButton == true ? Text('Stop') : Text('Continue')),
               if (isDone == true) Text('Done!'),
             ],
           ),
