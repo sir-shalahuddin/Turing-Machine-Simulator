@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'tape.dart';
@@ -57,14 +56,10 @@ class _PenjumlahanState extends State<Penjumlahan> {
         else
           tape.add(Tape('0', false));
       }
+    } else {
+      isEnable = false;
+      isAuto = false;
     }
-    else {
-      isEnable=false;
-      isAuto=false;
-    }
-
-
-
   }
 
   transition(int next, String output, String move) {

@@ -1,11 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:tm/pembagian.dart';
+import 'package:tm/faktorial.dart';
 import 'package:tm/pembagian3.dart';
 import 'package:tm/pengurangan.dart';
 import 'package:tm/penjumlahan.dart';
 import 'package:tm/perkalian.dart';
-
 import 'modulo.dart';
 
 void main() {
@@ -152,8 +151,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 minimumSize: Size(500, 500),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20))),
-                            onPressed: null,
-                            child: Text('Faktorial (Soon)'),
+                            onPressed: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Faktorial()));
+                            },
+                            child: Text('Faktorial'),
                           ),
                         )),
                     Flexible(

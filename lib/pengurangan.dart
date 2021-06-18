@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'tape.dart';
@@ -33,7 +32,6 @@ class _PenguranganState extends State<Pengurangan> {
   }
 
   void _submit() {
-
     isNext = false;
     isStart = false;
     isAuto = true;
@@ -49,7 +47,7 @@ class _PenguranganState extends State<Pengurangan> {
     ans = bil1;
     print(ans);
     hasil = bil1 - bil2;
-    if(hasil>=0) {
+    if (hasil >= 0) {
       int item = bil1 + bil2 + 3;
       for (int i = 0; i < item; i++) {
         if (i == 0 || i == item - 1)
@@ -59,14 +57,10 @@ class _PenguranganState extends State<Pengurangan> {
         else
           tape.add(Tape('0', false));
       }
+    } else {
+      isEnable = false;
+      isAuto = false;
     }
-    else {
-      isEnable=false;
-      isAuto=false;
-    }
-
-
-
   }
 
   transition(int next, String output, String move) {
@@ -94,8 +88,7 @@ class _PenguranganState extends State<Pengurangan> {
       transition(1, 'X', 'R');
     } else if (tape[head].value == '0') {
       transition(2, 'X', 'L');
-    }
-    else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'b') {
       transition(5, 'b', 'L');
     }
   }
@@ -119,7 +112,7 @@ class _PenguranganState extends State<Pengurangan> {
   state4() {
     if (tape[head].value == '0') {
       transition(0, 'b', 'R');
-      ans=ans-1;
+      ans = ans - 1;
     }
   }
 
@@ -131,10 +124,9 @@ class _PenguranganState extends State<Pengurangan> {
     }
   }
 
-  state6(){
-    isDone=true;
+  state6() {
+    isDone = true;
   }
-
 
   void nextState() {
     controller.animateTo((head - 3) * itemSize,
@@ -243,14 +235,13 @@ class _PenguranganState extends State<Pengurangan> {
                     Row(
                       children: [
                         Flexible(
-                          flex:10,
+                          flex: 10,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            decoration:
-                            InputDecoration(labelText: 'Bilangan Pertama (A)'),
+                            decoration: InputDecoration(
+                                labelText: 'Bilangan Pertama (A)'),
                             onSaved: (String value) {
-                              bil1= int.parse(value);
-
+                              bil1 = int.parse(value);
                             },
                             validator: (value) {
                               if (value.isEmpty) {
@@ -266,22 +257,23 @@ class _PenguranganState extends State<Pengurangan> {
                         ),
                         Flexible(
                           flex: 1,
-                          child:
-                          Text(" - ",style: TextStyle(fontSize: 20),),
+                          child: Text(
+                            " - ",
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                         Flexible(
                           flex: 1,
                           child: Text("      "),
                         ),
                         Flexible(
-                          flex:10,
+                          flex: 10,
                           child: TextFormField(
                               keyboardType: TextInputType.number,
-                              decoration:
-                              InputDecoration(labelText: 'Bilangan Kedua (B)'),
+                              decoration: InputDecoration(
+                                  labelText: 'Bilangan Kedua (B)'),
                               onSaved: (String value) {
                                 bil2 = int.parse(value);
-
                               },
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -317,7 +309,6 @@ class _PenguranganState extends State<Pengurangan> {
               SizedBox(
                 height: 20,
               ),
-
               Container(height: 50, child: _buildListView()),
               SizedBox(
                 height: 20,

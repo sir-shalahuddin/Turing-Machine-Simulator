@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'tape.dart';
 
@@ -58,8 +57,8 @@ class _Pembagian3State extends State<Pembagian3> {
     tape.clear();
     final isValid = _formKey.currentState.validate();
     if (!isValid) {
-      isEnable=false;
-      isAuto=false;
+      isEnable = false;
+      isAuto = false;
       return;
     }
     _formKey.currentState.save();
@@ -81,17 +80,15 @@ class _Pembagian3State extends State<Pembagian3> {
         else
           tape.add(Tape('0', false));
       }
-    }
-    else {
-      isEnable=false;
-      isAuto=false;
+    } else {
+      isEnable = false;
+      isAuto = false;
     }
 
     setState(() {});
   }
 
   state0() {
-    print(0);
     if (tape[head].value == '-') {
       transition(1, 'b', 'R');
     } else if (tape[head].value == '+') {
@@ -100,7 +97,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state1() {
-    print(1);
     if (tape[head].value == '-') {
       transition(5, '1', 'R');
     } else if (tape[head].value == '+') {
@@ -111,7 +107,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state2() {
-    print(2);
     if (tape[head].value == 'b') {
       transition(3, '-', 'L');
       sign = '-';
@@ -121,7 +116,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state3() {
-    print(3);
     if (tape[head].value == 'b') {
       transition(6, 'b', 'R');
     } else if (tape[head].value == '0' ||
@@ -133,7 +127,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state4() {
-    print(4);
     if (tape[head].value == '+') {
       transition(5, '1', 'R');
     } else if (tape[head].value == '-') {
@@ -144,7 +137,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state5() {
-    print(5);
     if (tape[head].value == 'b') {
       transition(3, '+', 'L');
       sign = '+';
@@ -154,7 +146,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state6() {
-    print(6);
     if (tape[head].value == '0') {
       transition(7, 'b', 'R');
     } else if (tape[head].value == '1') {
@@ -163,7 +154,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state7() {
-    print(7);
     if (tape[head].value == '0') {
       transition(7, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
@@ -172,7 +162,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state8() {
-    print(8);
     if (tape[head].value == 'x') {
       transition(8, tape[head].value, 'R');
     } else if (tape[head].value == '-' || tape[head].value == '+') {
@@ -183,7 +172,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state9() {
-    print(9);
     if (tape[head].value == 'x' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
@@ -194,7 +182,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state10() {
-    print(10);
     if (tape[head].value == 'x' || tape[head].value == '0') {
       pil = 10;
       transition(10, tape[head].value, 'R');
@@ -204,17 +191,15 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state11() {
-    print(11);
     if (tape[head].value == 'b') {
       transition(12, '0', 'L');
       ans++;
-    } else if (tape[head].value == '0' ) {
+    } else if (tape[head].value == '0') {
       transition(11, tape[head].value, 'R');
     }
   }
 
   state12() {
-    print(12);
     if (tape[head].value == 'x' ||
         tape[head].value == '-' ||
         tape[head].value == '+' ||
@@ -227,7 +212,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state13() {
-    print(13);
     if (tape[head].value == 'x' ||
         tape[head].value == '-' ||
         tape[head].value == '+' ||
@@ -240,7 +224,6 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state14() {
-    print(14);
     isDone = true;
   }
 
@@ -364,7 +347,8 @@ class _Pembagian3State extends State<Pembagian3> {
               SizedBox(
                 height: 20,
               ),
-              Text("Format Input : (X+Y)0\u1d2e(X+Y)0\u1d2c , dengan X = + & Y = -"),
+              Text(
+                  "Format Input : (X+Y)0\u1d2e(X+Y)0\u1d2c , dengan X = + & Y = -"),
               Form(
                 key: _formKey,
                 child: Column(
@@ -375,11 +359,11 @@ class _Pembagian3State extends State<Pembagian3> {
                     Row(
                       children: [
                         Flexible(
-                          flex:10,
+                          flex: 10,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            decoration:
-                            InputDecoration(labelText: 'Masukkan bilangan A'),
+                            decoration: InputDecoration(
+                                labelText: 'Masukkan bilangan A'),
                             onSaved: (String value) {
                               bil1new = int.parse(value);
                               bil1 = bil1new.abs();
@@ -398,19 +382,21 @@ class _Pembagian3State extends State<Pembagian3> {
                         ),
                         Flexible(
                           flex: 1,
-                            child:
-                            Text(" / ",style: TextStyle(fontSize: 20),),
+                          child: Text(
+                            " / ",
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                         Flexible(
                           flex: 1,
                           child: Text("      "),
                         ),
                         Flexible(
-                          flex:10,
+                          flex: 10,
                           child: TextFormField(
                               keyboardType: TextInputType.number,
-                              decoration:
-                              InputDecoration(labelText: 'Masukkan bilangan B'),
+                              decoration: InputDecoration(
+                                  labelText: 'Masukkan bilangan B'),
                               onSaved: (String value) {
                                 bil2new = int.parse(value);
                                 bil2 = bil2new.abs();
@@ -427,7 +413,6 @@ class _Pembagian3State extends State<Pembagian3> {
                     SizedBox(
                       height: 20,
                     ),
-
                     ElevatedButton(
                         onPressed: () {
                           _enableButton();
@@ -470,7 +455,6 @@ class _Pembagian3State extends State<Pembagian3> {
                     onPressed: pauseButton == true ? pause : unPause,
                     child:
                         pauseButton == true ? Text('Stop') : Text('Continue')),
-
               if (isDone == true) Text('Done!'),
             ],
           ),

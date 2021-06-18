@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'tape.dart';
 
@@ -27,6 +26,18 @@ class _PerkalianState extends State<Perkalian> {
   final itemSize = 50.0;
   Timer rep;
 
+  transition(int next, String output, String move) {
+    int moves = 0;
+    if (move == 'R')
+      moves = 1;
+    else if (move == 'L') moves = -1;
+    tape[head].value = output;
+    tape[head].isHead = false;
+    tape[head + moves].isHead = true;
+    head = head + moves;
+    pil = next;
+  }
+
   _enableButton() {
     isEnable = true;
   }
@@ -46,7 +57,7 @@ class _PerkalianState extends State<Perkalian> {
     }
     _formKey.currentState.save();
 
-    if(bil1>0 && bil2>0) {
+    if (bil1 > 0 && bil2 > 0) {
       int tes = bil1 * bil2;
       int item = bil1 + bil2 + 4 + tes.toInt();
       for (int i = 0; i < item; i++) {
@@ -61,144 +72,77 @@ class _PerkalianState extends State<Perkalian> {
         else
           tape.add(Tape('0', false));
       }
-    }
-    else {
-      isEnable=false;
-      isAuto=false;
+    } else {
+      isEnable = false;
+      isAuto = false;
     }
     setState(() {});
   }
 
   state0() {
-    print(0);
     if (tape[head].value == '0') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 1;
+      transition(1, 'b', 'R');
     } else if (tape[head].value == '1') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 6;
+      transition(6, 'b', 'R');
     }
   }
 
   state1() {
-    print(1);
     if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 1;
+      transition(1, '0', 'R');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 2;
+      transition(2, '1', 'R');
     }
   }
 
   state2() {
-    print(2);
     if (tape[head].value == '0') {
-      tape[head].value = 'Y';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 3;
+      transition(3, 'Y', 'R');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 5;
+      transition(5, '1', 'L');
     }
   }
 
   state3() {
-    print(3);
     if (tape[head].value == '1' || tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 3;
+      transition(3, tape[head].value , 'R');
     } else if (tape[head].value == 'b') {
-      tape[head].value = '0';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 4;
+      transition(4, '0', 'L');
     }
   }
 
   state4() {
-    print(4);
     if (tape[head].value == '1' || tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 4;
+      transition(4, tape[head].value, 'L');
     } else if (tape[head].value == 'Y') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 2;
+      transition(2, 'Y', 'R');
     }
   }
 
   state5() {
-    print(5);
     if (tape[head].value == 'Y' || tape[head].value == '0') {
       if (tape[head].value == 'Y') ans++;
-      tape[head].value = '0';
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 5;
+      transition(5, '0', 'L');
     } else if (tape[head].value == '1') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 5;
+      transition(5, '1', 'L');
     } else if (tape[head].value == 'b') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 0;
+      transition(0, 'b', 'R');
     }
   }
 
   state6() {
-    print(6);
     if (tape[head].value == '0') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 6;
+      transition(6, 'b', 'R');
     } else if (tape[head].value == '1') {
-      tape[head].value = 'b';
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 7;
+      transition(7, 'b', 'R');
     }
   }
 
   state7() {
-    print(7);
     if (tape[head].value == '0') {
-      tape[head].isHead = false;
-      tape[head + 1].isHead = true;
-      head = head + 1;
-      pil = 7;
+      transition(7, '0', 'R');
     } else if (tape[head].value == 'b') {
-      tape[head].isHead = false;
-      tape[head - 1].isHead = true;
-      head = head - 1;
-      pil = 8;
+      transition(8, 'b', 'L');
     }
   }
 
@@ -319,14 +263,13 @@ class _PerkalianState extends State<Perkalian> {
                     Row(
                       children: [
                         Flexible(
-                          flex:10,
+                          flex: 10,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            decoration:
-                            InputDecoration(labelText: 'Bilangan Pertama (A)'),
+                            decoration: InputDecoration(
+                                labelText: 'Bilangan Pertama (A)'),
                             onSaved: (String value) {
-                              bil1= int.parse(value);
-
+                              bil1 = int.parse(value);
                             },
                             validator: (value) {
                               if (value.isEmpty) {
@@ -342,22 +285,23 @@ class _PerkalianState extends State<Perkalian> {
                         ),
                         Flexible(
                           flex: 1,
-                          child:
-                          Text(" * ",style: TextStyle(fontSize: 20),),
+                          child: Text(
+                            " * ",
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                         Flexible(
                           flex: 1,
                           child: Text("      "),
                         ),
                         Flexible(
-                          flex:10,
+                          flex: 10,
                           child: TextFormField(
                               keyboardType: TextInputType.number,
-                              decoration:
-                              InputDecoration(labelText: 'Bilangan Kedua (B)'),
+                              decoration: InputDecoration(
+                                  labelText: 'Bilangan Kedua (B)'),
                               onSaved: (String value) {
                                 bil2 = int.parse(value);
-
                               },
                               validator: (value) {
                                 if (value.isEmpty) {

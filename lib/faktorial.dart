@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'tape.dart';
 
@@ -11,9 +10,7 @@ class Faktorial extends StatefulWidget {
 class _FaktorialState extends State<Faktorial> {
   var _formKey = GlobalKey<FormState>();
   int ans = 0;
-  int bil1 = 0;
-  int bil2 = 0;
-  int hasil = 0;
+  int bil1 = 0 ;
   List<Tape> tape = [];
   bool isNext;
   bool isEnable = false;
@@ -31,7 +28,9 @@ class _FaktorialState extends State<Faktorial> {
     int moves = 0;
     if (move == 'R')
       moves = 1;
-    else if (move == 'L') moves = -1;
+    else if (move == 'L')
+      moves = -1;
+    else if (move == 'S') moves = 0;
     tape[head].value = output;
     tape[head].isHead = false;
     tape[head + moves].isHead = true;
@@ -43,8 +42,15 @@ class _FaktorialState extends State<Faktorial> {
     isEnable = true;
   }
 
+  factorial(int no) {
+    if (no == 1) {
+      return 1;
+    }
+    return no * factorial(no - 1);
+  }
+
   void _submit() {
-    ans = 0;
+
     isNext = false;
     isStart = false;
     isAuto = true;
@@ -57,22 +63,24 @@ class _FaktorialState extends State<Faktorial> {
       return;
     }
     _formKey.currentState.save();
-//belum diganti
-    int item = bil1 * factorial(bil1-1) + 4;
-    for (int i = 0; i < item; i++) {
-      if (i == 0 || i == item - 1)
-        tape.add(Tape('b', false));
-      else if (i == bil1 + 1)
-        tape.add(Tape('1', false));
-      else if (i == item - 2)
-        tape.add(Tape('1', false));
-      else
-        tape.add(Tape('0', false));
+
+
+    if(bil1>0) {
+    ans=factorial(bil1);
+      int item = bil1 + 3 * (factorial(bil1) + 1)-1;
+      for (int i = 0; i < item; i++) {
+        if (i == 0 || i >= bil1 + 1)
+          tape.add(Tape('b', false));
+        else
+          tape.add(Tape('0', false));
+      }
+    }
+    else {
+      isEnable=false;
+      isAuto=false;
     }
 
-    setState(() {
-      hasil = bil1 * bil2;
-    });
+
   }
 
   state0() {
@@ -84,6 +92,7 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state1() {
+
     if (tape[head].value == '1' || tape[head].value == '0') {
       transition(1, tape[head].value, 'L');
     } else if (tape[head].value == 'b') {
@@ -92,6 +101,7 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state2() {
+
     if (tape[head].value == '0') {
       transition(3, 'x', 'R');
     } else if (tape[head].value == '1') {
@@ -100,13 +110,16 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state3() {
+
     if (tape[head].value == '1' || tape[head].value == '0') {
       transition(3, tape[head].value, 'R');
     } else if (tape[head].value == 'b') {
       transition(4, '0', 'S');
+    }
   }
 
   state4() {
+
     if (tape[head].value == '0' || tape[head].value == '1') {
       transition(4, tape[head].value, 'L');
     } else if (tape[head].value == 'x') {
@@ -115,16 +128,19 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state5() {
+
     if (tape[head].value == '0') {
       transition(5, tape[head].value, 'R');
-    } else if (tape[head].value == '1') {
-      transition(7, tape[head].value, 'L');
+    } else if (tape[head].value == 'b') {
+      transition(7, '1', 'L');
+    }
   }
 
   state6() {
+
     if (tape[head].value == '1' ||
-        tape[head].value == 'x' ||
-        tape[head].value == '0') {
+        tape[head].value == '0' ||
+        tape[head].value == 'x') {
       transition(6, tape[head].value, 'L');
     } else if (tape[head].value == 'b') {
       transition(16, tape[head].value, 'R');
@@ -132,13 +148,14 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state7() {
-    if (tape[head].value == '1' ||
-        tape[head].value == '0') {
+
+    if (tape[head].value == '1' || tape[head].value == '0') {
       transition(7, tape[head].value, 'L');
     } else if (tape[head].value == 'x') {
       transition(7, '0', 'L');
     } else if (tape[head].value == 'b') {
       transition(8, tape[head].value, 'R');
+    }
   }
 
   state8() {
@@ -172,8 +189,7 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state12() {
-    if (tape[head].value == '1' ||
-        tape[head].value == '0') {
+    if (tape[head].value == '1' || tape[head].value == '0') {
       transition(12, tape[head].value, 'R');
     } else if (tape[head].value == 'b') {
       transition(13, '0', 'S');
@@ -181,8 +197,7 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state13() {
-    if (tape[head].value == '1' ||
-        tape[head].value == '0') {
+    if (tape[head].value == '1' || tape[head].value == '0') {
       transition(13, tape[head].value, 'L');
     } else if (tape[head].value == 'x') {
       transition(11, tape[head].value, 'R');
@@ -204,6 +219,7 @@ class _FaktorialState extends State<Faktorial> {
       transition(15, tape[head].value, 'L');
     } else if (tape[head].value == 'x') {
       transition(9, tape[head].value, 'R');
+    }
   }
 
   state16() {
@@ -229,11 +245,11 @@ class _FaktorialState extends State<Faktorial> {
       transition(22, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
       transition(24, 'b', 'S');
+    }
   }
 
   state19() {
-    if (tape[head].value == '0' ||
-        tape[head].value == 'x') {
+    if (tape[head].value == '0' || tape[head].value == 'x') {
       transition(19, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
       transition(20, tape[head].value, 'R');
@@ -241,8 +257,7 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state20() {
-    if (tape[head].value == 'x' ||
-        tape[head].value == '0') {
+    if (tape[head].value == 'x' || tape[head].value == '0') {
       transition(20, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
       transition(21, tape[head].value, 'L');
@@ -268,13 +283,13 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state23() {
-    if (tape[head].value == '1' ||
-        tape[head].value == '0') {
+    if (tape[head].value == '1' || tape[head].value == '0') {
       transition(23, tape[head].value, 'L');
     } else if (tape[head].value == 'x') {
       transition(23, '0', 'R');
     } else if (tape[head].value == 'b') {
       transition(9, tape[head].value, 'R');
+    }
   }
 
   state24() {
@@ -288,7 +303,9 @@ class _FaktorialState extends State<Faktorial> {
       transition(25, 'b', 'R');
     } else if (tape[head].value == 'b') {
       transition(24, tape[head].value, 'S');
+    }
   }
+
   void nextState() {
     controller.animateTo((head - 3) * itemSize,
         duration: Duration(milliseconds: 400), curve: Curves.linear);
@@ -435,7 +452,7 @@ class _FaktorialState extends State<Faktorial> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Modulo'),
+        title: Text('Faktorial'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -443,38 +460,61 @@ class _FaktorialState extends State<Faktorial> {
           margin: EdgeInsets.all(8),
           child: Column(
             children: [
+              SizedBox(
+                height: 20,
+              ),
+              Text("Format Input : 0\u1d3a"),
+              SizedBox(
+                height: 20,
+              ),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
-                    Text('X % Y'),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration:
-                      InputDecoration(labelText: 'Masukkan bilangan X'),
-                      onSaved: (String value) {
-                        bil1 = int.parse(value);
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Harus diisi';
-                        }
-                        return null;
-                      },
+                    Center(
+                      child: Row(
+                        children: [
+                          Flexible(
+                            flex:1,
+                            child: Container(
+
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  labelText: 'Bilangan (N)'),
+                              onSaved: (String value) {
+                                bil1 = int.parse(value);
+                              },
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Harus diisi';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          // Flexible(
+                          //   flex: 1,
+                          //   child: SizedBox(
+                          //     width: 20,
+                          //   ),
+                          // ),
+                          Flexible(
+                              flex: 1,
+                              child: Text(
+                                ' ! ',
+                                style: TextStyle(fontSize: 20),
+                              )),
+                        ],
+                      ),
                     ),
-                    TextFormField(
-                        keyboardType: TextInputType.number,
-                        decoration:
-                        InputDecoration(labelText: 'Masukkan bilangan Y'),
-                        onSaved: (String value) {
-                          bil2 = int.parse(value);
-                        },
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Harus diisi';
-                          }
-                          return null;
-                        }),
+                    SizedBox(
+                      height: 20,
+                    ),
                     ElevatedButton(
                         onPressed: () {
                           _enableButton();
@@ -482,17 +522,28 @@ class _FaktorialState extends State<Faktorial> {
                           setState(() {});
                         },
                         child: Text('Process')),
-                    if (isDone == true) Text('The Result : $hasil'),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    if (bil1 <= 0 && isStart==false ) Text('Not Applicable'),
+                    if (isDone == true) Text('The Result : $ans'),
                     SizedBox(
                       height: 20,
                     ),
                   ],
                 ),
               ),
+              Text("Format Output : 0\u1d3a"),
+              SizedBox(
+                height: 20,
+              ),
               Container(height: 50, child: _buildListView()),
+              SizedBox(
+                height: 20,
+              ),
               ElevatedButton(
                   onPressed:
-                  isNext == true && isDone != true ? nextState : null,
+                      isNext == true && isDone != true ? nextState : null,
                   child: Text('NextState')),
               ElevatedButton(
                   onPressed: isEnable == true ? start : null,
@@ -504,7 +555,7 @@ class _FaktorialState extends State<Faktorial> {
                 ElevatedButton(
                     onPressed: pauseButton == true ? pause : unPause,
                     child:
-                    pauseButton == true ? Text('Stop') : Text('Continue')),
+                        pauseButton == true ? Text('Stop') : Text('Continue')),
               if (isDone == true) Text('Done!'),
             ],
           ),
