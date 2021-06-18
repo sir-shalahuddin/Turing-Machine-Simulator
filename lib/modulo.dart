@@ -61,7 +61,7 @@ class _ModuloState extends State<Modulo> {
       int item = bil1 + bil2 + 4;
       for (int i = 0; i < item; i++) {
         if (i == 0 || i == item - 1)
-          tape.add(Tape('b', false));
+          tape.add(Tape('B', false));
         else if (i == bil2 + 1)
           tape.add(Tape('1', false));
         else if (i == item - 2)
@@ -81,7 +81,7 @@ class _ModuloState extends State<Modulo> {
 
   state0() {
     if (tape[head].value == '0') {
-      transition(1, 'b', 'R');
+      transition(1, 'B', 'R');
     } else if (tape[head].value == '1') {
       transition(4, tape[head].value, 'R');
     }
@@ -96,28 +96,28 @@ class _ModuloState extends State<Modulo> {
   }
 
   state2() {
-    if (tape[head].value == 'x') {
+    if (tape[head].value == 'X') {
       transition(2, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      transition(7, 'b', 'L');
+      transition(7, 'B', 'L');
     } else if (tape[head].value == '0') {
-      transition(3, 'x', 'L');
+      transition(3, 'X', 'L');
     }
   }
 
   state3() {
-    if (tape[head].value == 'x' ||
+    if (tape[head].value == 'X' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
       transition(3, tape[head].value, 'L');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(0, '0', 'R');
       ans++;
     }
   }
 
   state4() {
-    if (tape[head].value == 'x' || tape[head].value == '0') {
+    if (tape[head].value == 'X' || tape[head].value == '0') {
       transition(4, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
       transition(5, tape[head].value, 'R');
@@ -125,29 +125,29 @@ class _ModuloState extends State<Modulo> {
   }
 
   state5() {
-    if (tape[head].value == 'b') {
+    if (tape[head].value == 'B') {
       transition(6, tape[head].value, 'L');
     }
   }
 
   state6() {
-    if (tape[head].value == 'x' ||
+    if (tape[head].value == 'X' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
       transition(6, tape[head].value, 'L');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(0, tape[head].value, 'R');
       ans = 0;
     }
   }
 
   state7() {
-    if (tape[head].value == 'x' ||
+    if (tape[head].value == 'X' ||
         tape[head].value == '0' ||
         tape[head].value == '1') {
-      transition(7, 'b', 'L');
-    } else if (tape[head].value == 'b') {
-      transition(8, 'b', 'R');
+      transition(7, 'B', 'L');
+    } else if (tape[head].value == 'B') {
+      transition(8, 'B', 'R');
     }
   }
 

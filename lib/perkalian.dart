@@ -62,13 +62,13 @@ class _PerkalianState extends State<Perkalian> {
       int item = bil1 + bil2 + 4 + tes.toInt();
       for (int i = 0; i < item; i++) {
         if (i == 0 || i == item - 1 - tes)
-          tape.add(Tape('b', false));
+          tape.add(Tape('B', false));
         else if (i == bil2 + 1)
           tape.add(Tape('1', false));
         else if (i == item - 2 - tes)
           tape.add(Tape('1', false));
         else if (i >= item - tes)
-          tape.add(Tape('b', false));
+          tape.add(Tape('B', false));
         else
           tape.add(Tape('0', false));
       }
@@ -81,9 +81,9 @@ class _PerkalianState extends State<Perkalian> {
 
   state0() {
     if (tape[head].value == '0') {
-      transition(1, 'b', 'R');
+      transition(1, 'B', 'R');
     } else if (tape[head].value == '1') {
-      transition(6, 'b', 'R');
+      transition(6, 'B', 'R');
     }
   }
 
@@ -106,7 +106,7 @@ class _PerkalianState extends State<Perkalian> {
   state3() {
     if (tape[head].value == '1' || tape[head].value == '0') {
       transition(3, tape[head].value , 'R');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(4, '0', 'L');
     }
   }
@@ -125,24 +125,24 @@ class _PerkalianState extends State<Perkalian> {
       transition(5, '0', 'L');
     } else if (tape[head].value == '1') {
       transition(5, '1', 'L');
-    } else if (tape[head].value == 'b') {
-      transition(0, 'b', 'R');
+    } else if (tape[head].value == 'B') {
+      transition(0, 'B', 'R');
     }
   }
 
   state6() {
     if (tape[head].value == '0') {
-      transition(6, 'b', 'R');
+      transition(6, 'B', 'R');
     } else if (tape[head].value == '1') {
-      transition(7, 'b', 'R');
+      transition(7, 'B', 'R');
     }
   }
 
   state7() {
     if (tape[head].value == '0') {
       transition(7, '0', 'R');
-    } else if (tape[head].value == 'b') {
-      transition(8, 'b', 'L');
+    } else if (tape[head].value == 'B') {
+      transition(8, 'B', 'L');
     }
   }
 

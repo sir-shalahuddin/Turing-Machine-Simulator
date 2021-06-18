@@ -70,13 +70,13 @@ class _Pembagian3State extends State<Pembagian3> {
       int item = bil1 + bil2 + 5 + tes.toInt();
       for (int i = 0; i < item; i++) {
         if (i == 0 || i == item - 1 - tes)
-          tape.add(Tape('b', false));
+          tape.add(Tape('B', false));
         else if (i == 1)
           bil2new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
         else if (i == bil2 + 2)
           bil1new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
         else if (i >= item - 2 - tes)
-          tape.add(Tape('b', false));
+          tape.add(Tape('B', false));
         else
           tape.add(Tape('0', false));
       }
@@ -90,9 +90,9 @@ class _Pembagian3State extends State<Pembagian3> {
 
   state0() {
     if (tape[head].value == '-') {
-      transition(1, 'b', 'R');
+      transition(1, 'B', 'R');
     } else if (tape[head].value == '+') {
-      transition(4, 'b', 'R');
+      transition(4, 'B', 'R');
     }
   }
 
@@ -107,7 +107,7 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state2() {
-    if (tape[head].value == 'b') {
+    if (tape[head].value == 'B') {
       transition(3, '-', 'L');
       sign = '-';
     } else if (tape[head].value == '0') {
@@ -116,12 +116,10 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state3() {
-    if (tape[head].value == 'b') {
-      transition(6, 'b', 'R');
+    if (tape[head].value == 'B') {
+      transition(6, 'B', 'R');
     } else if (tape[head].value == '0' ||
-        tape[head].value == '1' ||
-        tape[head].value == '-' ||
-        tape[head].value == '+') {
+        tape[head].value == '1' ) {
       transition(3, tape[head].value, 'L');
     }
   }
@@ -137,7 +135,7 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state5() {
-    if (tape[head].value == 'b') {
+    if (tape[head].value == 'B') {
       transition(3, '+', 'L');
       sign = '+';
     } else if (tape[head].value == '0') {
@@ -147,7 +145,7 @@ class _Pembagian3State extends State<Pembagian3> {
 
   state6() {
     if (tape[head].value == '0') {
-      transition(7, 'b', 'R');
+      transition(7, 'B', 'R');
     } else if (tape[head].value == '1') {
       transition(10, '1', 'R');
     }
@@ -162,27 +160,27 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state8() {
-    if (tape[head].value == 'x') {
+    if (tape[head].value == 'X') {
       transition(8, tape[head].value, 'R');
     } else if (tape[head].value == '-' || tape[head].value == '+') {
       transition(13, tape[head].value, 'L');
     } else if (tape[head].value == '0') {
-      transition(9, 'x', 'L');
+      transition(9, 'X', 'L');
     }
   }
 
   state9() {
-    if (tape[head].value == 'x' ||
+    if (tape[head].value == 'X' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
       transition(9, tape[head].value, 'L');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(6, '0', 'R');
     }
   }
 
   state10() {
-    if (tape[head].value == 'x' || tape[head].value == '0') {
+    if (tape[head].value == 'X' || tape[head].value == '0') {
       pil = 10;
       transition(10, tape[head].value, 'R');
     } else if (tape[head].value == '-' || tape[head].value == '+') {
@@ -191,7 +189,7 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state11() {
-    if (tape[head].value == 'b') {
+    if (tape[head].value == 'B') {
       transition(12, '0', 'L');
       ans++;
     } else if (tape[head].value == '0') {
@@ -200,26 +198,26 @@ class _Pembagian3State extends State<Pembagian3> {
   }
 
   state12() {
-    if (tape[head].value == 'x' ||
+    if (tape[head].value == 'X' ||
         tape[head].value == '-' ||
         tape[head].value == '+' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
       transition(12, tape[head].value, 'L');
-    } else if (tape[head].value == 'b') {
-      transition(6, 'b', 'R');
+    } else if (tape[head].value == 'B') {
+      transition(6, 'B', 'R');
     }
   }
 
   state13() {
-    if (tape[head].value == 'x' ||
+    if (tape[head].value == 'X' ||
         tape[head].value == '-' ||
         tape[head].value == '+' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
-      transition(13, 'b', 'L');
-    } else if (tape[head].value == 'b') {
-      transition(14, 'b', 'R');
+      transition(13, 'B', 'L');
+    } else if (tape[head].value == 'B') {
+      transition(14, 'B', 'R');
     }
   }
 

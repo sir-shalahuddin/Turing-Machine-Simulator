@@ -70,7 +70,7 @@ class _FaktorialState extends State<Faktorial> {
       int item = bil1 + 3 * (factorial(bil1) + 1)-1;
       for (int i = 0; i < item; i++) {
         if (i == 0 || i >= bil1 + 1)
-          tape.add(Tape('b', false));
+          tape.add(Tape('B', false));
         else
           tape.add(Tape('0', false));
       }
@@ -86,7 +86,7 @@ class _FaktorialState extends State<Faktorial> {
   state0() {
     if (tape[head].value == '0') {
       transition(0, tape[head].value, 'R');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(1, '1', 'S');
     }
   }
@@ -95,7 +95,7 @@ class _FaktorialState extends State<Faktorial> {
 
     if (tape[head].value == '1' || tape[head].value == '0') {
       transition(1, tape[head].value, 'L');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(2, tape[head].value, 'R');
     }
   }
@@ -103,7 +103,7 @@ class _FaktorialState extends State<Faktorial> {
   state2() {
 
     if (tape[head].value == '0') {
-      transition(3, 'x', 'R');
+      transition(3, 'X', 'R');
     } else if (tape[head].value == '1') {
       transition(5, tape[head].value, 'R');
     }
@@ -113,7 +113,7 @@ class _FaktorialState extends State<Faktorial> {
 
     if (tape[head].value == '1' || tape[head].value == '0') {
       transition(3, tape[head].value, 'R');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(4, '0', 'S');
     }
   }
@@ -122,7 +122,7 @@ class _FaktorialState extends State<Faktorial> {
 
     if (tape[head].value == '0' || tape[head].value == '1') {
       transition(4, tape[head].value, 'L');
-    } else if (tape[head].value == 'x') {
+    } else if (tape[head].value == 'X') {
       transition(2, tape[head].value, 'R');
     }
   }
@@ -131,7 +131,7 @@ class _FaktorialState extends State<Faktorial> {
 
     if (tape[head].value == '0') {
       transition(5, tape[head].value, 'R');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(7, '1', 'L');
     }
   }
@@ -140,9 +140,9 @@ class _FaktorialState extends State<Faktorial> {
 
     if (tape[head].value == '1' ||
         tape[head].value == '0' ||
-        tape[head].value == 'x') {
+        tape[head].value == 'X') {
       transition(6, tape[head].value, 'L');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(16, tape[head].value, 'R');
     }
   }
@@ -151,16 +151,16 @@ class _FaktorialState extends State<Faktorial> {
 
     if (tape[head].value == '1' || tape[head].value == '0') {
       transition(7, tape[head].value, 'L');
-    } else if (tape[head].value == 'x') {
+    } else if (tape[head].value == 'X') {
       transition(7, '0', 'L');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(8, tape[head].value, 'R');
     }
   }
 
   state8() {
     if (tape[head].value == '0') {
-      transition(9, 'b', 'R');
+      transition(9, 'B', 'R');
     }
   }
 
@@ -168,7 +168,7 @@ class _FaktorialState extends State<Faktorial> {
     if (tape[head].value == '1') {
       transition(6, tape[head].value, 'L');
     } else if (tape[head].value == '0') {
-      transition(10, 'x', 'R');
+      transition(10, 'X', 'R');
     }
   }
 
@@ -182,7 +182,7 @@ class _FaktorialState extends State<Faktorial> {
 
   state11() {
     if (tape[head].value == '0') {
-      transition(12, 'x', 'R');
+      transition(12, 'X', 'R');
     } else if (tape[head].value == '1') {
       transition(14, tape[head].value, 'L');
     }
@@ -191,7 +191,7 @@ class _FaktorialState extends State<Faktorial> {
   state12() {
     if (tape[head].value == '1' || tape[head].value == '0') {
       transition(12, tape[head].value, 'R');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(13, '0', 'S');
     }
   }
@@ -199,13 +199,13 @@ class _FaktorialState extends State<Faktorial> {
   state13() {
     if (tape[head].value == '1' || tape[head].value == '0') {
       transition(13, tape[head].value, 'L');
-    } else if (tape[head].value == 'x') {
+    } else if (tape[head].value == 'X') {
       transition(11, tape[head].value, 'R');
     }
   }
 
   state14() {
-    if (tape[head].value == 'x') {
+    if (tape[head].value == 'X') {
       transition(14, '0', 'L');
     } else if (tape[head].value == '1') {
       transition(15, tape[head].value, 'L');
@@ -217,39 +217,39 @@ class _FaktorialState extends State<Faktorial> {
       transition(15, '0', 'L');
     } else if (tape[head].value == '0') {
       transition(15, tape[head].value, 'L');
-    } else if (tape[head].value == 'x') {
+    } else if (tape[head].value == 'X') {
       transition(9, tape[head].value, 'R');
     }
   }
 
   state16() {
-    if (tape[head].value == 'x') {
-      transition(17, 'b', 'R');
+    if (tape[head].value == 'X') {
+      transition(17, 'B', 'R');
     } else if (tape[head].value == '1') {
-      transition(25, 'b', 'R');
+      transition(25, 'B', 'R');
     }
   }
 
   state17() {
-    if (tape[head].value == 'x') {
+    if (tape[head].value == 'X') {
       transition(19, tape[head].value, 'R');
     } else if (tape[head].value == '1' || tape[head].value == '0') {
-      transition(18, 'b', 'R');
+      transition(18, 'B', 'R');
     }
   }
 
   state18() {
     if (tape[head].value == '0') {
-      transition(18, 'b', 'R');
-    } else if (tape[head].value == 'x') {
+      transition(18, 'B', 'R');
+    } else if (tape[head].value == 'X') {
       transition(22, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      transition(24, 'b', 'S');
+      transition(24, 'B', 'S');
     }
   }
 
   state19() {
-    if (tape[head].value == '0' || tape[head].value == 'x') {
+    if (tape[head].value == '0' || tape[head].value == 'X') {
       transition(19, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
       transition(20, tape[head].value, 'R');
@@ -257,7 +257,7 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state20() {
-    if (tape[head].value == 'x' || tape[head].value == '0') {
+    if (tape[head].value == 'X' || tape[head].value == '0') {
       transition(20, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
       transition(21, tape[head].value, 'L');
@@ -265,19 +265,19 @@ class _FaktorialState extends State<Faktorial> {
   }
 
   state21() {
-    if (tape[head].value == 'x') {
+    if (tape[head].value == 'X') {
       transition(21, tape[head].value, 'L');
     } else if (tape[head].value == '0' || tape[head].value == '1') {
-      transition(6, 'x', 'L');
+      transition(6, 'X', 'L');
     }
   }
 
   state22() {
-    if (tape[head].value == 'x' ||
+    if (tape[head].value == 'X' ||
         tape[head].value == '1' ||
         tape[head].value == '0') {
       transition(22, tape[head].value, 'R');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(23, '1', 'L');
     }
   }
@@ -285,9 +285,9 @@ class _FaktorialState extends State<Faktorial> {
   state23() {
     if (tape[head].value == '1' || tape[head].value == '0') {
       transition(23, tape[head].value, 'L');
-    } else if (tape[head].value == 'x') {
+    } else if (tape[head].value == 'X') {
       transition(23, '0', 'R');
-    } else if (tape[head].value == 'b') {
+    } else if (tape[head].value == 'B') {
       transition(9, tape[head].value, 'R');
     }
   }
@@ -300,8 +300,8 @@ class _FaktorialState extends State<Faktorial> {
     if (tape[head].value == '0') {
       transition(25, tape[head].value, 'R');
     } else if (tape[head].value == '1') {
-      transition(25, 'b', 'R');
-    } else if (tape[head].value == 'b') {
+      transition(25, 'B', 'R');
+    } else if (tape[head].value == 'B') {
       transition(24, tape[head].value, 'S');
     }
   }

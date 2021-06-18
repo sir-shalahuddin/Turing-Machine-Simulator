@@ -51,7 +51,7 @@ class _PenguranganState extends State<Pengurangan> {
       int item = bil1 + bil2 + 3;
       for (int i = 0; i < item; i++) {
         if (i == 0 || i == item - 1)
-          tape.add(Tape('b', false));
+          tape.add(Tape('B', false));
         else if (i == bil1 + 1)
           tape.add(Tape('1', false));
         else
@@ -88,8 +88,8 @@ class _PenguranganState extends State<Pengurangan> {
       transition(1, 'X', 'R');
     } else if (tape[head].value == '0') {
       transition(2, 'X', 'L');
-    } else if (tape[head].value == 'b') {
-      transition(5, 'b', 'L');
+    } else if (tape[head].value == 'B') {
+      transition(5, 'B', 'L');
     }
   }
 
@@ -104,14 +104,14 @@ class _PenguranganState extends State<Pengurangan> {
   state3() {
     if (tape[head].value == '0') {
       transition(3, '0', 'L');
-    } else if (tape[head].value == 'b') {
-      transition(4, 'b', 'R');
+    } else if (tape[head].value == 'B') {
+      transition(4, 'B', 'R');
     }
   }
 
   state4() {
     if (tape[head].value == '0') {
-      transition(0, 'b', 'R');
+      transition(0, 'B', 'R');
       ans = ans - 1;
     }
   }

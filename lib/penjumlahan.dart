@@ -50,7 +50,7 @@ class _PenjumlahanState extends State<Penjumlahan> {
       int item = bil1 + bil2 + 3;
       for (int i = 0; i < item; i++) {
         if (i == 0 || i == item - 1)
-          tape.add(Tape('b', false));
+          tape.add(Tape('B', false));
         else if (i == bil1+1 )
           tape.add(Tape('1', false));
         else
@@ -85,8 +85,8 @@ class _PenjumlahanState extends State<Penjumlahan> {
   state1() {
     if (tape[head].value == '0') {
       transition(1, '0', 'R');
-    } else if (tape[head].value == 'b') {
-      transition(2, 'b', 'L');
+    } else if (tape[head].value == 'B') {
+      transition(2, 'B', 'L');
     }
   }
 
@@ -100,8 +100,8 @@ class _PenjumlahanState extends State<Penjumlahan> {
     if (tape[head].value == '0') {
       transition(3, '0', 'L');
       ans++;
-    } else if (tape[head].value == 'b') {
-      transition(4, 'b', 'R');
+    } else if (tape[head].value == 'B') {
+      transition(4, 'B', 'R');
     }
   }
 
