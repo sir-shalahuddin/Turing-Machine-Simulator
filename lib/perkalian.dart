@@ -46,21 +46,26 @@ class _PerkalianState extends State<Perkalian> {
     }
     _formKey.currentState.save();
 
-    int tes = bil1 * bil2;
-    int item = bil1 + bil2 + 4 + tes.toInt();
-    for (int i = 0; i < item; i++) {
-      if (i == 0 || i == item - 1 - tes)
-        tape.add(Tape('b', false));
-      else if (i == bil2 + 1)
-        tape.add(Tape('1', false));
-      else if (i == item - 2 - tes)
-        tape.add(Tape('1', false));
-      else if (i >= item - tes)
-        tape.add(Tape('b', false));
-      else
-        tape.add(Tape('0', false));
+    if(bil1>0 && bil2>0) {
+      int tes = bil1 * bil2;
+      int item = bil1 + bil2 + 4 + tes.toInt();
+      for (int i = 0; i < item; i++) {
+        if (i == 0 || i == item - 1 - tes)
+          tape.add(Tape('b', false));
+        else if (i == bil2 + 1)
+          tape.add(Tape('1', false));
+        else if (i == item - 2 - tes)
+          tape.add(Tape('1', false));
+        else if (i >= item - tes)
+          tape.add(Tape('b', false));
+        else
+          tape.add(Tape('0', false));
+      }
     }
-
+    else {
+      isEnable=false;
+      isAuto=false;
+    }
     setState(() {});
   }
 
@@ -292,7 +297,7 @@ class _PerkalianState extends State<Perkalian> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pembagian'),
+        title: Text('Perkalian'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -304,34 +309,68 @@ class _PerkalianState extends State<Perkalian> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    Text('X / Y'),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration:
-                          InputDecoration(labelText: 'Masukkan bilangan X'),
-                      onSaved: (String value) {
-                        bil1 = int.parse(value);
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Harus diisi';
-                        }
-                        return null;
-                      },
+                    SizedBox(
+                      height: 20,
                     ),
-                    TextFormField(
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Masukkan bilangan Y'),
-                        onSaved: (String value) {
-                          bil2 = int.parse(value);
-                        },
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Harus diisi';
-                          }
-                          return null;
-                        }),
+                    Text("Format Input : 0\u1d2e10\u1d2c1"),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          flex:10,
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            decoration:
+                            InputDecoration(labelText: 'Bilangan Pertama (A)'),
+                            onSaved: (String value) {
+                              bil1= int.parse(value);
+
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Harus diisi';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Text("      "),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child:
+                          Text(" * ",style: TextStyle(fontSize: 20),),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Text("      "),
+                        ),
+                        Flexible(
+                          flex:10,
+                          child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              decoration:
+                              InputDecoration(labelText: 'Bilangan Kedua (B)'),
+                              onSaved: (String value) {
+                                bil2 = int.parse(value);
+
+                              },
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Harus diisi';
+                                }
+                                return null;
+                              }),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     ElevatedButton(
                         onPressed: () {
                           _enableButton();
@@ -339,6 +378,9 @@ class _PerkalianState extends State<Perkalian> {
                           setState(() {});
                         },
                         child: Text('Process')),
+                    SizedBox(
+                      height: 20,
+                    ),
                     if (hasil != 0) Text('Not Applicable'),
                     if (hasil == 0 && isDone == true) Text('The Result : $ans'),
                     SizedBox(
@@ -347,7 +389,14 @@ class _PerkalianState extends State<Perkalian> {
                   ],
                 ),
               ),
+              Text("Format Output : 0\u1d3a"),
+              SizedBox(
+                height: 20,
+              ),
               Container(height: 50, child: _buildListView()),
+              SizedBox(
+                height: 20,
+              ),
               ElevatedButton(
                   onPressed:
                       isNext == true && isDone != true ? nextState : null,

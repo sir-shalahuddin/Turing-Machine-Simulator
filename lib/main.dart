@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tm/pembagian.dart';
-import 'package:tm/pembagian2.dart';
+import 'package:tm/pembagian3.dart';
+import 'package:tm/pengurangan.dart';
+import 'package:tm/penjumlahan.dart';
 import 'package:tm/perkalian.dart';
 
 import 'modulo.dart';
@@ -64,7 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                 minimumSize: Size(500, 500),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20))),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Penjumlahan()));
+                            },
                             child: Text('Penjumlahan'),
                           ),
                         )),
@@ -78,7 +85,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                   minimumSize: Size(500, 500),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20))),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Pengurangan()));
+                              },
                               child: Text('Pengurangan'),
                             )))
                   ],
@@ -120,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Pembagian2()));
+                                        builder: (context) => Pembagian3()));
                               },
                               child: Text('Pembagian'),
                             )))
@@ -140,8 +152,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 minimumSize: Size(500, 500),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20))),
-                            onPressed: () {},
-                            child: Text('Faktorial'),
+                            onPressed: null,
+                            child: Text('Faktorial (Soon)'),
                           ),
                         )),
                     Flexible(
@@ -178,8 +190,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 minimumSize: Size(500, 500),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20))),
-                            onPressed: () {},
-                            child: Text('Pangkat'),
+                            onPressed: null,
+                            child: Text('Pangkat (Soon)'),
                           ),
                         )),
                     Flexible(
@@ -192,8 +204,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   minimumSize: Size(500, 500),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20))),
-                              onPressed: () {},
-                              child: Text('Logaritma biner'),
+                              onPressed:null,
+                              child: Text('Logaritma biner (Soon)'),
                             )))
                   ],
                 ))

@@ -58,18 +58,23 @@ class _ModuloState extends State<Modulo> {
     }
     _formKey.currentState.save();
 
-    int item = bil1 + bil2 + 4;
-    for (int i = 0; i < item; i++) {
-      if (i == 0 || i == item - 1)
-        tape.add(Tape('b', false));
-      else if (i == bil2 + 1)
-        tape.add(Tape('1', false));
-      else if (i == item - 2)
-        tape.add(Tape('1', false));
-      else
-        tape.add(Tape('0', false));
+    if(bil1>0 && bil2>0) {
+      int item = bil1 + bil2 + 4;
+      for (int i = 0; i < item; i++) {
+        if (i == 0 || i == item - 1)
+          tape.add(Tape('b', false));
+        else if (i == bil2 + 1)
+          tape.add(Tape('1', false));
+        else if (i == item - 2)
+          tape.add(Tape('1', false));
+        else
+          tape.add(Tape('0', false));
+      }
     }
-
+    else {
+      isEnable=false;
+      isAuto=false;
+    }
     setState(() {
       hasil = bil1 % bil2;
     });
@@ -251,38 +256,72 @@ class _ModuloState extends State<Modulo> {
           margin: EdgeInsets.all(8),
           child: Column(
             children: [
+              SizedBox(
+                height: 20,
+              ),
+              Text("Format Input : 0\u1d2e10\u1d2c1"),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
-                    Text('X % Y'),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration:
-                          InputDecoration(labelText: 'Masukkan bilangan X'),
-                      onSaved: (String value) {
-                        bil1 = int.parse(value);
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Harus diisi';
-                        }
-                        return null;
-                      },
+                    SizedBox(
+                      height: 20,
                     ),
-                    TextFormField(
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Masukkan bilangan Y'),
-                        onSaved: (String value) {
-                          bil2 = int.parse(value);
-                        },
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Harus diisi';
-                          }
-                          return null;
-                        }),
+                    Row(
+                      children: [
+                        Flexible(
+                          flex:10,
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            decoration:
+                            InputDecoration(labelText: 'Bilangan Pertama (A)'),
+                            onSaved: (String value) {
+                              bil1= int.parse(value);
+
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Harus diisi';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Text("      "),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child:
+                          Text(" % ",style: TextStyle(fontSize: 20),),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Text("      "),
+                        ),
+                        Flexible(
+                          flex:10,
+                          child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              decoration:
+                              InputDecoration(labelText: 'Bilangan Kedua (B)'),
+                              onSaved: (String value) {
+                                bil2 = int.parse(value);
+
+                              },
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Harus diisi';
+                                }
+                                return null;
+                              }),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     ElevatedButton(
                         onPressed: () {
                           _enableButton();
@@ -290,6 +329,10 @@ class _ModuloState extends State<Modulo> {
                           setState(() {});
                         },
                         child: Text('Process')),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    if (bil1 <0 || bil2<0 ) Text('Not Applicable'),
                     if (isDone == true) Text('The Result : $hasil'),
                     SizedBox(
                       height: 20,
@@ -297,7 +340,14 @@ class _ModuloState extends State<Modulo> {
                   ],
                 ),
               ),
+              Text("Format Output : 0\u1d3a"),
+              SizedBox(
+                height: 20,
+              ),
               Container(height: 50, child: _buildListView()),
+              SizedBox(
+                height: 20,
+              ),
               ElevatedButton(
                   onPressed:
                       isNext == true && isDone != true ? nextState : null,

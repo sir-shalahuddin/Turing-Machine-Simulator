@@ -4,4 +4,5 @@ class Tape {
   bool isHead;
 
   Tape(this.value, this.isHead);
+
 }

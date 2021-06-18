@@ -361,40 +361,73 @@ class _Pembagian3State extends State<Pembagian3> {
           margin: EdgeInsets.all(8),
           child: Column(
             children: [
+              SizedBox(
+                height: 20,
+              ),
+              Text("Format Input : (X+Y)0\u1d2e(X+Y)0\u1d2c , dengan X = + & Y = -"),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
-                    Text('X / Y'),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration:
-                          InputDecoration(labelText: 'Masukkan bilangan X'),
-                      onSaved: (String value) {
-                        bil1new = int.parse(value);
-                        bil1 = bil1new.abs();
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Harus diisi';
-                        }
-                        return null;
-                      },
+                    SizedBox(
+                      height: 20,
                     ),
-                    TextFormField(
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Masukkan bilangan Y'),
-                        onSaved: (String value) {
-                          bil2new = int.parse(value);
-                          bil2 = bil2new.abs();
-                        },
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Harus diisi';
-                          }
-                          return null;
-                        }),
+                    Row(
+                      children: [
+                        Flexible(
+                          flex:10,
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            decoration:
+                            InputDecoration(labelText: 'Masukkan bilangan A'),
+                            onSaved: (String value) {
+                              bil1new = int.parse(value);
+                              bil1 = bil1new.abs();
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Harus diisi';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Text("      "),
+                        ),
+                        Flexible(
+                          flex: 1,
+                            child:
+                            Text(" / ",style: TextStyle(fontSize: 20),),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Text("      "),
+                        ),
+                        Flexible(
+                          flex:10,
+                          child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              decoration:
+                              InputDecoration(labelText: 'Masukkan bilangan B'),
+                              onSaved: (String value) {
+                                bil2new = int.parse(value);
+                                bil2 = bil2new.abs();
+                              },
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Harus diisi';
+                                }
+                                return null;
+                              }),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+
                     ElevatedButton(
                         onPressed: () {
                           _enableButton();
@@ -402,6 +435,9 @@ class _Pembagian3State extends State<Pembagian3> {
                           setState(() {});
                         },
                         child: Text('Process')),
+                    SizedBox(
+                      height: 20,
+                    ),
                     if (hasil != 0) Text('Not Applicable'),
                     if (hasil == 0 && isDone == true)
                       Text('The Result : $sign$ans'),
@@ -411,7 +447,14 @@ class _Pembagian3State extends State<Pembagian3> {
                   ],
                 ),
               ),
+              Text("Format Output : (X+Y)0\u1d3a , dengan X = + & Y = -"),
+              SizedBox(
+                height: 20,
+              ),
               Container(height: 50, child: _buildListView()),
+              SizedBox(
+                height: 20,
+              ),
               ElevatedButton(
                   onPressed:
                       isNext == true && isDone != true ? nextState : null,
