@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'tape.dart';
 
-class Pembagian3 extends StatefulWidget {
+class Penjumlahan2 extends StatefulWidget {
   @override
-  _Pembagian3State createState() => _Pembagian3State();
+  _Penjumlahan2State createState() => _Penjumlahan2State();
 }
 
-class _Pembagian3State extends State<Pembagian3> {
+class _Penjumlahan2State extends State<Penjumlahan2> {
   var _formKey = GlobalKey<FormState>();
-  String sign;
   int ans = 0;
   int bil1 = 0;
   int bil2 = 0;
@@ -25,22 +25,10 @@ class _Pembagian3State extends State<Pembagian3> {
   bool isAuto;
   int pil;
   int head;
-  int counter = 0;
+  int item = 0;
   ScrollController controller;
   final itemSize = 50.0;
   Timer rep;
-
-  transition(int next, String output, String move) {
-    int moves = 0;
-    if (move == 'R')
-      moves = 1;
-    else if (move == 'L') moves = -1;
-    tape[head].value = output;
-    tape[head].isHead = false;
-    tape[head + moves].isHead = true;
-    head = head + moves;
-    pil = next;
-  }
 
   _enableButton() {
     isEnable = true;
@@ -57,224 +45,302 @@ class _Pembagian3State extends State<Pembagian3> {
     tape.clear();
     final isValid = _formKey.currentState.validate();
     if (!isValid) {
-      isEnable = false;
-      isAuto = false;
       return;
     }
     _formKey.currentState.save();
-    hasil = bil1 % bil2;
-
-    if (hasil == 0) {
-      double tes = bil1 / bil2;
-
-      int item = bil1 + bil2 + 5 + tes.toInt();
-      for (int i = 0; i < item; i++) {
-        if (i == 0 || i == item - 1 - tes)
-          tape.add(Tape('B', false));
-        else if (i == 1)
-          bil2new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
-        else if (i == bil2 + 2)
-          bil1new < 0 ? tape.add(Tape('-', false)) : tape.add(Tape('+', false));
-        else if (i >= item - 2 - tes)
-          tape.add(Tape('B', false));
-        else
-          tape.add(Tape('0', false));
-      }
-    } else {
-      isEnable = false;
-      isAuto = false;
+    hasil = (bil1 + bil2).abs();
+    bil1new = bil1.abs();
+    bil2new = bil2.abs();
+    int item = bil1new + bil2new + 4 + hasil;
+    for (int i = 0; i < item; i++) {
+      if (i == 0 || i >= bil1new + bil2new + 3)
+        tape.add(Tape('B', false));
+      else if (i == bil1new + 1 || i == bil1new + bil2new + 2)
+        tape.add(Tape('C', false));
+      else if (bil1 > 0 && i >= 1 && i <= bil1new)
+        tape.add(Tape('1', false));
+      else if (bil1 < 0 && i >= 1 && i <= bil1new)
+        tape.add(Tape('0', false));
+      else if (bil2 > 0 && i >= bil1new + 2 && i < bil1new + bil2new + 3)
+        tape.add(Tape('1', false));
+      else if (bil2 < 0 && i >= bil1new + 2 && i < bil1new + bil2new + 3)
+        tape.add(Tape('0', false));
     }
+  }
 
-    setState(() {});
+  transition(int next, String output, String move) {
+    int moves = 0;
+    if (move == 'R')
+      moves = 1;
+    else if (move == 'L') moves = -1;
+    tape[head].value = output;
+    tape[head].isHead = false;
+    tape[head + moves].isHead = true;
+    head = head + moves;
+    pil = next;
   }
 
   state0() {
-    if (tape[head].value == '-') {
-      transition(1, 'B', 'R');
-    } else if (tape[head].value == '+') {
-      transition(4, 'B', 'R');
+    if (tape[head].value == '1') {
+      transition(1, 'X', 'R');
+    } else if (tape[head].value == 'X') {
+      transition(0, 'X', 'R');
+    } else if (tape[head].value == 'C') {
+      transition(7, 'C', 'R');
+    } else if (tape[head].value == '0') {
+      transition(16, 'X', 'R');
     }
   }
 
   state1() {
-    if (tape[head].value == '-') {
-      transition(5, '1', 'R');
-    } else if (tape[head].value == '+') {
-      transition(2, '1', 'R');
-    } else if (tape[head].value == '0') {
-      transition(1, tape[head].value, 'R');
+    if (tape[head].value == '1') {
+      transition(1, '1', 'R');
+    } else if (tape[head].value == 'C') {
+      transition(2, 'C', 'R');
     }
   }
 
   state2() {
-    if (tape[head].value == 'B') {
-      transition(3, '-', 'L');
-      sign = '-';
+    if (tape[head].value == '1') {
+      transition(3, 'X', 'R');
     } else if (tape[head].value == '0') {
-      transition(2, tape[head].value, 'R');
+      transition(13, 'X', 'L');
+    } else if (tape[head].value == 'X') {
+      transition(2, 'X', 'R');
+    } else if (tape[head].value == 'C') {
+      transition(10, 'C', 'R');
     }
   }
 
   state3() {
-    if (tape[head].value == 'B') {
-      transition(6, 'B', 'R');
-    } else if (tape[head].value == '0' ||
-        tape[head].value == '1' ) {
-      transition(3, tape[head].value, 'L');
+    if (tape[head].value == 'C') {
+      transition(4, tape[head].value, 'R');
+    } else if (tape[head].value == '1') {
+      transition(3, '1', 'R');
     }
   }
 
   state4() {
-    if (tape[head].value == '+') {
+    if (tape[head].value == 'B') {
       transition(5, '1', 'R');
-    } else if (tape[head].value == '-') {
-      transition(2, '1', 'R');
-    } else if (tape[head].value == '0') {
-      transition(4, tape[head].value, 'R');
+      ans++;
+    } else if (tape[head].value == '1') {
+      transition(4, '1', 'R');
     }
   }
 
   state5() {
     if (tape[head].value == 'B') {
-      transition(3, '+', 'L');
-      sign = '+';
-    } else if (tape[head].value == '0') {
-      transition(5, tape[head].value, 'R');
+      transition(6, '1', 'L');
+      ans++;
     }
   }
 
   state6() {
-    if (tape[head].value == '0') {
-      transition(7, 'B', 'R');
-    } else if (tape[head].value == '1') {
-      transition(10, '1', 'R');
+    if (tape[head].value == '1' ||
+        tape[head].value == '0' ||
+        tape[head].value == 'X' ||
+        tape[head].value == 'C') {
+      transition(6, tape[head].value, 'L');
+    } else if (tape[head].value == 'B') {
+      transition(0, 'B', 'R');
     }
   }
 
   state7() {
-    if (tape[head].value == '0') {
+    if (tape[head].value == 'X') {
       transition(7, tape[head].value, 'R');
+    } else if (tape[head].value == 'C') {
+      transition(8, 'B', 'L');
     } else if (tape[head].value == '1') {
-      transition(8, '1', 'R');
+      transition(12, 'X', 'R');
+    } else if (tape[head].value == '0') {
+      transition(15, 'X', 'R');
     }
   }
 
   state8() {
-    if (tape[head].value == 'X') {
-      transition(8, tape[head].value, 'R');
-    } else if (tape[head].value == '-' || tape[head].value == '+') {
-      transition(13, tape[head].value, 'L');
-    } else if (tape[head].value == '0') {
-      transition(9, 'X', 'L');
+    if (tape[head].value == '1' ||
+        tape[head].value == 'X' ||
+        tape[head].value == 'C') {
+      transition(8, 'B', 'L');
+      //  ans++;
+    } else if (tape[head].value == 'B') {
+      transition(9, 'B', 'R');
     }
   }
 
   state9() {
-    if (tape[head].value == 'X' ||
-        tape[head].value == '1' ||
-        tape[head].value == '0') {
-      transition(9, tape[head].value, 'L');
-    } else if (tape[head].value == 'B') {
-      transition(6, '0', 'R');
-    }
+    isDone = true;
   }
 
   state10() {
-    if (tape[head].value == 'X' || tape[head].value == '0') {
+    if (tape[head].value == '1') {
       transition(10, tape[head].value, 'R');
-    } else if (tape[head].value == '-' || tape[head].value == '+') {
-      transition(11, tape[head].value, 'R');
+    } else if (tape[head].value == 'B') {
+      transition(11, '1', 'L');
+      ans++;
     }
   }
 
   state11() {
-    if (tape[head].value == 'B') {
-      transition(12, '0', 'L');
-      ans++;
-    } else if (tape[head].value == '0') {
-      transition(11, tape[head].value, 'R');
+    if (tape[head].value == '1') {
+      transition(11, tape[head].value, 'L');
+    } else if (tape[head].value == 'C') {
+      transition(6, 'C', 'L');
     }
   }
 
   state12() {
-    if (tape[head].value == 'X' ||
-        tape[head].value == '-' ||
-        tape[head].value == '+' ||
-        tape[head].value == '1' ||
-        tape[head].value == '0') {
-      transition(12, tape[head].value, 'L');
+    if (tape[head].value == 'C' || tape[head].value == '1') {
+      transition(12, tape[head].value, 'R');
     } else if (tape[head].value == 'B') {
-      transition(6, 'B', 'R');
+      transition(6, '1', 'L');
+      ans++;
     }
   }
 
   state13() {
-    if (tape[head].value == 'X' ||
-        tape[head].value == '-' ||
-        tape[head].value == '+' ||
-        tape[head].value == '1' ||
-        tape[head].value == '0') {
-      transition(13, 'B', 'L');
-    } else if (tape[head].value == 'B') {
-      transition(14, 'B', 'R');
+    if (tape[head].value == 'C') {
+      transition(14, tape[head].value, 'L');
+    } else if (tape[head].value == 'X') {
+      transition(13, 'X', 'L');
     }
   }
 
   state14() {
-    isDone = true;
+    if (tape[head].value == 'X') {
+      transition(0, 'X', 'R');
+    } else if (tape[head].value == '1' || tape[head].value == '0') {
+      transition(14, tape[head].value, 'L');
+    }
+  }
+
+  state15() {
+    if (tape[head].value == 'C' || tape[head].value == '0') {
+      transition(15, tape[head].value, 'R');
+    } else if (tape[head].value == 'B') {
+      transition(6, '0', 'L');
+      ans--;
+    }
+  }
+
+  state16() {
+    if (tape[head].value == '0') {
+      transition(16, '0', 'R');
+    } else if (tape[head].value == 'C') {
+      transition(17, 'C', 'R');
+    }
+  }
+
+  state17() {
+    if (tape[head].value == '0') {
+      transition(18, 'X', 'R');
+    } else if (tape[head].value == '1') {
+      transition(13, 'X', 'L');
+    } else if (tape[head].value == 'X') {
+      transition(17, 'X', 'R');
+    } else if (tape[head].value == 'C') {
+      transition(20, 'C', 'R');
+    }
+  }
+
+  state18() {
+    if (tape[head].value == 'C') {
+      transition(19, tape[head].value, 'R');
+    } else if (tape[head].value == '0') {
+      transition(18, '0', 'R');
+    }
+  }
+
+  state19() {
+    if (tape[head].value == 'B') {
+      transition(20, '0', 'R');
+      ans--;
+    } else if (tape[head].value == '0') {
+      transition(19, '0', 'R');
+    }
+  }
+
+  state20() {
+    if (tape[head].value == 'B') {
+      transition(6, '0', 'L');
+      ans--;
+    } else if (tape[head].value == '0') {
+      transition(20, tape[head].value, 'R');
+    }
   }
 
   void nextState() {
-    controller.animateTo((head - 3) * itemSize,
-        duration: Duration(milliseconds: 400), curve: Curves.linear);
-    switch (pil) {
-      case 0:
-        state0();
-        break;
-      case 1:
-        state1();
-        break;
-      case 2:
-        state2();
-        break;
-      case 3:
-        state3();
-        break;
-      case 4:
-        state4();
-        break;
-      case 5:
-        state5();
-        break;
-      case 6:
-        state6();
-        break;
-      case 7:
-        state7();
-        break;
-      case 8:
-        state8();
-        break;
-      case 9:
-        state9();
-        break;
-      case 10:
-        state10();
-        break;
-      case 11:
-        state11();
-        break;
-      case 12:
-        state12();
-        break;
-      case 13:
-        state13();
-        break;
-      case 14:
-        state14();
-        break;
-    }
-    setState(() {});
+    setState(() {
+      controller.animateTo((head - 3) * itemSize,
+          duration: Duration(milliseconds: 400), curve: Curves.linear);
+      switch (pil) {
+        case 0:
+          state0();
+          break;
+        case 1:
+          state1();
+          break;
+        case 2:
+          state2();
+          break;
+        case 3:
+          state3();
+          break;
+        case 4:
+          state4();
+          break;
+        case 5:
+          state5();
+          break;
+        case 6:
+          state6();
+          break;
+        case 7:
+          state7();
+          break;
+        case 8:
+          state8();
+          break;
+        case 9:
+          state9();
+          break;
+        case 10:
+          state10();
+          break;
+        case 11:
+          state11();
+          break;
+        case 12:
+          state12();
+          break;
+        case 13:
+          state13();
+          break;
+        case 14:
+          state14();
+          break;
+        case 15:
+          state15();
+          break;
+        case 16:
+          state16();
+          break;
+        case 17:
+          state17();
+          break;
+        case 18:
+          state18();
+          break;
+        case 19:
+          state19();
+          break;
+        case 20:
+          state20();
+          break;
+      }
+    });
   }
 
   void start() {
@@ -333,7 +399,7 @@ class _Pembagian3State extends State<Pembagian3> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pembagian'),
+        title: Text('Penjumlahan'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -341,15 +407,14 @@ class _Pembagian3State extends State<Pembagian3> {
           margin: EdgeInsets.all(8),
           child: Column(
             children: [
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                  "Format Input : (X+Y)0\u1d2e(X+Y)0\u1d2c , dengan X = + & Y = -"),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text("Format Input : (0+1)\u1d2cc(0+1)\u1d2ec "),
                     SizedBox(
                       height: 20,
                     ),
@@ -360,10 +425,9 @@ class _Pembagian3State extends State<Pembagian3> {
                           child: TextFormField(
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                labelText: 'Masukkan bilangan A'),
+                                labelText: 'Bilangan Pertama (A)'),
                             onSaved: (String value) {
-                              bil1new = int.parse(value);
-                              bil1 = bil1new.abs();
+                              bil1 = int.parse(value);
                             },
                             validator: (value) {
                               if (value.isEmpty) {
@@ -380,7 +444,7 @@ class _Pembagian3State extends State<Pembagian3> {
                         Flexible(
                           flex: 1,
                           child: Text(
-                            " / ",
+                            " + ",
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
@@ -393,10 +457,9 @@ class _Pembagian3State extends State<Pembagian3> {
                           child: TextFormField(
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                  labelText: 'Masukkan bilangan B'),
+                                  labelText: 'Bilangan Kedua (B)'),
                               onSaved: (String value) {
-                                bil2new = int.parse(value);
-                                bil2 = bil2new.abs();
+                                bil2 = int.parse(value);
                               },
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -420,16 +483,15 @@ class _Pembagian3State extends State<Pembagian3> {
                     SizedBox(
                       height: 20,
                     ),
-                    if (hasil != 0) Text('Not Applicable'),
-                    if (hasil == 0 && isDone == true)
-                      Text('The Result : $sign$ans'),
+                    if (hasil < 0) Text('Not Applicable'),
+                    if (hasil >= 0 && isDone == true) Text('The Result : $ans'),
                     SizedBox(
                       height: 20,
                     ),
                   ],
                 ),
               ),
-              Text("Format Output : (X+Y)0\u1d3a , dengan X = + & Y = -"),
+              Text("Format Output : (0+1)\u1d3a"),
               SizedBox(
                 height: 20,
               ),
@@ -466,6 +528,7 @@ class _Pembagian3State extends State<Pembagian3> {
         itemExtent: itemSize,
         scrollDirection: Axis.horizontal,
         itemCount: tape.length,
+        shrinkWrap: true,
         itemBuilder: (context, index) {
           return Container(
             child: Container(

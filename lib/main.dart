@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:tm/faktorial.dart';
 import 'package:tm/pembagian3.dart';
 import 'package:tm/pengurangan.dart';
+import 'package:tm/pengurangan2.dart';
 import 'package:tm/penjumlahan.dart';
-import 'package:tm/perkalian.dart';
+import 'package:tm/penjumlahan2.dart';
+import 'package:tm/perkalian2.dart';
 import 'modulo.dart';
 
 void main() {
@@ -69,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Penjumlahan()));
+                                      builder: (context) => Penjumlahan2()));
                             },
                             child: Text('Penjumlahan'),
                           ),
@@ -88,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Pengurangan()));
+                                        builder: (context) => Pengurangan2()));
                               },
                               child: Text('Pengurangan'),
                             )))
@@ -112,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Perkalian()));
+                                      builder: (context) => Perkalian2()));
                             },
                             child: Text('Perkalian'),
                           ),
